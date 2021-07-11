@@ -10,6 +10,13 @@
 #include <QPropertyAnimation>
 #include <QRect>
 #include <QTimer>
+#include <localmusic.h>
+#include <downloadpage.h>
+#include <cloudlist.h>
+#include <likepage.h>
+#include <login.h>
+#include <playlist.h>
+#include <lyricspage.h>
 namespace Ui {
 class MainWidget;
 }
@@ -27,15 +34,36 @@ private slots:
 
     void on_min_clicked();
 
+    void on_menu_clicked(const QModelIndex &index);
+
+    void on_avatar_clicked();
+
+    void on_pushButton_4_clicked();
+
+    void closeList();
+    void showList();
+    void closeLyrics();
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWidget *ui;
+    localMusic *localMusic_page;
+    downloadPage *download_page;
+    cloudList *cloud_page;
+    likePage *like_page;
+    playList *playlist_page;
+    lyricsPage *lyrics_page;
     bool is_Press;
+    bool isListShow = false;
+    bool isLyricsShow = false;
     QPoint m_point;
     void initUI();
     void mousePressEvent(QMouseEvent *event);//进行鼠界面的拖动
     void mouseMoveEvent(QMouseEvent *event);//进行鼠界面的拖动
     void mouseReleaseEvent(QMouseEvent *event);//进行鼠界面的拖动
     void showEvent(QShowEvent *event);//恢复最小化事件
+    void showListf();//展示音乐list
+    void closeListf();//关闭音乐list
 };
 
 #endif // MAINWIDGET_H

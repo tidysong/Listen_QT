@@ -3,5 +3,26 @@
         <file>pic/logo.png</file>
         <file>pic/close.png</file>
         <file>pic/min.png</file>
+        <file>pic/music.png</file>
+        <file>pic/cloud.png</file>
+        <file>pic/download.png</file>
+        <file>pic/like.png</file>
+        <file>pic/unLogin.png</file>
+        <file>pic/cloudSelected.png</file>
+        <file>pic/downloadSelected.png</file>
+        <file>pic/likeSelected.png</file>
+        <file>pic/musicSelected.png</file>
+        <file>pic/search.png</file>
+        <file>pic/playSelected.png</file>
+        <file>pic/record.png</file>
+        <file>pic/play.png</file>
+        <file>pic/next.png</file>
+        <file>pic/previous.png</file>
+        <file>pic/music_back.png</file>
+        <file>pic/account.png</file>
+        <file>pic/password.png</file>
+        <file>pic/musicList.png</file>
+        <file>pic/musicListHover.png</file>
+        <file>pic/down.png</file>
     </qresource>
 </RCC>

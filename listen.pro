@@ -25,13 +25,35 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwidget.cpp
+        mainwidget.cpp \
+    localmusic.cpp \
+    downloadpage.cpp \
+    cloudlist.cpp \
+    likepage.cpp \
+    login.cpp \
+    playlist.cpp \
+    lyricspage.cpp
 
 HEADERS += \
-        mainwidget.h
+        mainwidget.h \
+    localmusic.h \
+    downloadpage.h \
+    cloudlist.h \
+    likepage.h \
+    login.h \
+    playlist.h \
+    lyricspage.h
 
 FORMS += \
-        mainwidget.ui
+        mainwidget.ui \
+    localmusic.ui \
+    downloadpage.ui \
+    cloudlist.ui \
+    likepage.ui \
+    login.ui \
+    playlist.ui \
+    lyricspage.ui \
+    lyrics.ui
 
 RESOURCES += \
     resourece.qrc

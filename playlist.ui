@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>playList</class>
+ <widget class="QWidget" name="playList">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>313</width>
+    <height>672</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>273</width>
+     <height>632</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#widget{
+	background-color : white;
+	border-bottom-right-radius : 10px;
+	border-top-right-radius : 10px;
+}</string>
+   </property>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>582</y>
+      <width>71</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>幼圆</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_4{
+	background-color : rgba(0,0,0,0);
+	border : 0px;
+	color : #1D1D1D;
+}
+#pushButton_4:hover{
+    background-color:#D7D7D7;
+}
+#pushButton_4:pressed{
+    background-color:#8F8F8F;
+}</string>
+    </property>
+    <property name="text">
+     <string>收起</string>
+    </property>
+    <property name="icon">
+     <iconset resource="resourece.qrc">
+      <normaloff>:/pic/musicList.png</normaloff>:/pic/musicList.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>18</width>
+      <height>18</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resourece.qrc"/>
+ </resources>
+ <connections/>
+</ui>
