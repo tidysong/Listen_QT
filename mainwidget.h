@@ -41,6 +41,7 @@ private slots:
     void on_pushButton_4_clicked();
 
     void closeList();
+    void showList();
     void closeLyrics();
     void on_pushButton_clicked();
 
@@ -61,6 +62,8 @@ private:
     void mouseMoveEvent(QMouseEvent *event);//进行鼠界面的拖动
     void mouseReleaseEvent(QMouseEvent *event);//进行鼠界面的拖动
     void showEvent(QShowEvent *event);//恢复最小化事件
+    void showListf();//展示音乐list
+    void closeListf();//关闭音乐list
 };
 
 #endif // MAINWIDGET_H

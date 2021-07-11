@@ -49,12 +49,10 @@ void MainWidget::initUI(){
     lyrics_page = new lyricsPage(this);
     lyrics_page->hide();
     connect(lyrics_page,SIGNAL(closePage()),this,SLOT(closeLyrics()));
-
+    connect(lyrics_page,SIGNAL(showList()),this,SLOT(showList()));
     playlist_page = new playList(this);
     playlist_page->hide();
     connect(playlist_page,SIGNAL(closeList()),this,SLOT(closeList()));
-
-
 }
 
 void MainWidget::on_close_clicked()
@@ -161,6 +159,10 @@ void MainWidget::on_avatar_clicked()
 
 void MainWidget::on_pushButton_4_clicked()
 {
+    showListf();
+}
+
+void MainWidget::showListf(){
     playlist_page->show();
     isListShow = true;
     QPropertyAnimation *pScaleAnimation = new QPropertyAnimation(playlist_page, "pos");
@@ -169,10 +171,7 @@ void MainWidget::on_pushButton_4_clicked()
     pScaleAnimation->setEndValue(QPoint(752, 0));
     pScaleAnimation->start();
 }
-
-
-void MainWidget::closeList(){
-    //SLOT 关闭playList
+void MainWidget::closeListf(){
     isListShow = false;
     QPropertyAnimation *pScaleAnimation = new QPropertyAnimation(playlist_page, "pos");
     pScaleAnimation->setDuration(200);
@@ -187,7 +186,14 @@ void MainWidget::closeList(){
     connect(timer, SIGNAL(timeout()), playlist_page, SLOT(hide()));
     timer->start(200);
 }
-
+void MainWidget::closeList(){
+    //SLOT 关闭playList
+    closeListf();
+}
+void MainWidget::showList(){
+    //SLOT 打开playList
+    showListf();
+}
 void MainWidget::closeLyrics(){
     //SLOT 关闭lyrics
     isLyricsShow = false;
@@ -208,8 +214,6 @@ void MainWidget::closeLyrics(){
 void MainWidget::on_pushButton_clicked()
 {
     //展示歌词界面
-    //ui->widget_3->raise();
-    lyrics_page->stackUnder(ui->widget_3);
     lyrics_page->show();
     isLyricsShow = true;
     QPropertyAnimation *pScaleAnimation = new QPropertyAnimation(lyrics_page, "pos");

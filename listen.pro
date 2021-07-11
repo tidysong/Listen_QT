@@ -32,8 +32,7 @@ SOURCES += \
     likepage.cpp \
     login.cpp \
     playlist.cpp \
-    lyricspage.cpp \
-    lyrics.cpp
+    lyricspage.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -43,8 +42,7 @@ HEADERS += \
     likepage.h \
     login.h \
     playlist.h \
-    lyricspage.h \
-    lyrics.h
+    lyricspage.h
 
 FORMS += \
         mainwidget.ui \

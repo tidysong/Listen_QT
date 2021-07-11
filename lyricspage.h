@@ -4,8 +4,7 @@
 #include <QWidget>
 #include <QPropertyAnimation>
 #include <QTimer>
-
-#include <lyrics.h>
+#include <QLabel>
 namespace Ui {
 class lyricsPage;
 }
@@ -20,10 +19,13 @@ public:
 
 signals:
     void closePage();
+    void showList();
 private slots:
     void on_close_clicked();
 
     void on_closePage_clicked();
+
+    void on_showList_clicked();
 
 private:
     Ui::lyricsPage *ui;
