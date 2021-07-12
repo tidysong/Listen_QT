@@ -27,7 +27,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">#widget{
-	background-color : white;
+	background-color : #F7F7F7;
 	border-bottom-right-radius : 10px;
 	border-top-right-radius : 10px;
 }</string>
@@ -72,6 +72,85 @@
       <width>18</width>
       <height>18</height>
      </size>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>256</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::CustomContextMenu</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#listWidget{
+	background-color : rgba(0,0,0,0);
+	border : 0px;
+	border-radius:10px;
+}
+#listWidget::Item:hover{
+	background-color : #E8E8E8;
+}
+#listWidget::Item:selected{
+	background-color : #E8E8E8;
+}</string>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:#333333</string>
+    </property>
+    <property name="text">
+     <string>播放列表</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑 Light</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:#666666;</string>
+    </property>
+    <property name="text">
+     <string>12首歌曲</string>
     </property>
    </widget>
   </widget>

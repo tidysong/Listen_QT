@@ -14,10 +14,11 @@ public:
         unsigned int ms;
         QString word;
     } Wordms;
-    readLyrics();
+    readLyrics(QString fileCon);
     QStringList list;
     QList<Wordms> lrclist;
-    bool process(QString filePath);
+    QString fileCon;
+    bool process();
     int getIndex(qint64 position);
     QString getLyricText(int index);
 

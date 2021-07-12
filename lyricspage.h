@@ -5,6 +5,11 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 #include <QLabel>
+#include <QFile>
+#include <QTextStream>
+#include <QTextCodec>
+#include <QIODevice>
+#include <readlyrics.h>
 namespace Ui {
 class lyricsPage;
 }
@@ -29,6 +34,7 @@ private slots:
 
 private:
     Ui::lyricsPage *ui;
+    QList<QLabel*> labelList;
 };
 
 #endif // LYRICSPAGE_H

@@ -24,5 +24,6 @@
         <file>pic/musicList.png</file>
         <file>pic/musicListHover.png</file>
         <file>pic/down.png</file>
+        <file>pic/play_tg.png</file>
     </qresource>
 </RCC>

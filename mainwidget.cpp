@@ -53,6 +53,10 @@ void MainWidget::initUI(){
     playlist_page = new playList(this);
     playlist_page->hide();
     connect(playlist_page,SIGNAL(closeList()),this,SLOT(closeList()));
+
+
+    curve; //动作曲线
+    curve.setType(QEasingCurve::InCubic); //动作曲线方式
 }
 
 void MainWidget::on_close_clicked()
@@ -166,17 +170,19 @@ void MainWidget::showListf(){
     playlist_page->show();
     isListShow = true;
     QPropertyAnimation *pScaleAnimation = new QPropertyAnimation(playlist_page, "pos");
-    pScaleAnimation->setDuration(100);
+    pScaleAnimation->setDuration(50);
     pScaleAnimation->setStartValue(QPoint(1065, 0));
     pScaleAnimation->setEndValue(QPoint(752, 0));
+    pScaleAnimation->setEasingCurve(curve);
     pScaleAnimation->start();
 }
 void MainWidget::closeListf(){
     isListShow = false;
     QPropertyAnimation *pScaleAnimation = new QPropertyAnimation(playlist_page, "pos");
-    pScaleAnimation->setDuration(200);
+    pScaleAnimation->setDuration(50);
     pScaleAnimation->setStartValue(QPoint(752, 0));
     pScaleAnimation->setEndValue(QPoint(1065, 0));
+    pScaleAnimation->setEasingCurve(curve);
     pScaleAnimation->start();
 
     QTimer *timer;
@@ -201,6 +207,7 @@ void MainWidget::closeLyrics(){
     pScaleAnimation->setDuration(200);
     pScaleAnimation->setStartValue(QPoint(0, 0));
     pScaleAnimation->setEndValue(QPoint(0, 632));
+    pScaleAnimation->setEasingCurve(curve);
     pScaleAnimation->start();
 
     QTimer *timer;
@@ -220,5 +227,6 @@ void MainWidget::on_pushButton_clicked()
     pScaleAnimation->setDuration(200);
     pScaleAnimation->setStartValue(QPoint(0, 632));
     pScaleAnimation->setEndValue(QPoint(0, 0));
+    pScaleAnimation->setEasingCurve(curve);
     pScaleAnimation->start();
 }

@@ -32,7 +32,12 @@ SOURCES += \
     likepage.cpp \
     login.cpp \
     playlist.cpp \
-    lyricspage.cpp
+    lyricspage.cpp\
+    readlyrics.cpp \
+    listsingle.cpp \
+    player.cpp \
+    player.cpp \
+    qmediainfo.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -42,7 +47,12 @@ HEADERS += \
     likepage.h \
     login.h \
     playlist.h \
-    lyricspage.h
+    lyricspage.h \
+    readlyrics.h \
+    listsingle.h \
+    player.h \
+    qmediainfo.h \
+    player.h
 
 FORMS += \
         mainwidget.ui \
@@ -53,7 +63,7 @@ FORMS += \
     login.ui \
     playlist.ui \
     lyricspage.ui \
-    lyrics.ui
+    listsingle.ui
 
 RESOURCES += \
     resourece.qrc

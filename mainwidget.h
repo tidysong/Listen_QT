@@ -10,6 +10,7 @@
 #include <QPropertyAnimation>
 #include <QRect>
 #include <QTimer>
+#include <QEasingCurve>
 #include <localmusic.h>
 #include <downloadpage.h>
 #include <cloudlist.h>
@@ -57,6 +58,7 @@ private:
     bool isListShow = false;
     bool isLyricsShow = false;
     QPoint m_point;
+    QEasingCurve curve;
     void initUI();
     void mousePressEvent(QMouseEvent *event);//进行鼠界面的拖动
     void mouseMoveEvent(QMouseEvent *event);//进行鼠界面的拖动
