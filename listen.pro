@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -37,7 +37,8 @@ SOURCES += \
     listsingle.cpp \
     player.cpp \
     player.cpp \
-    qmediainfo.cpp
+    qmediainfo.cpp \
+    httpGP.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -52,7 +53,8 @@ HEADERS += \
     listsingle.h \
     player.h \
     qmediainfo.h \
-    player.h
+    player.h \
+    httpGP.h
 
 FORMS += \
         mainwidget.ui \
