@@ -6,6 +6,8 @@ playList::playList(QWidget *parent) :
 {
     ui->setupUi(this);
     initUI();
+
+    connect(player::p, SIGNAL(listChange()), this, SLOT(listChange()));
 }
 
 playList::~playList()
@@ -24,14 +26,6 @@ void playList::initUI(){
     effect->setBlurRadius(20);//设定阴影的半径大小 30-40
     ui->widget->setGraphicsEffect(effect);//应用至widget
 
-    QListWidget *list= ui->listWidget;
-    for(int i = 0; i < 10; i++){
-        QListWidgetItem *item=new QListWidgetItem(list,i);
-        item->setSizeHint(QSize(256,75));
-        listSingle *w = new listSingle(list);
-        w->set(i);
-        list->setItemWidget(item,w);
-    }
 }
 
 void playList::on_pushButton_4_clicked()
@@ -60,4 +54,17 @@ void playList::on_listWidget_customContextMenuRequested(const QPoint &pos)
         delete popMenu;
         delete deleteSeed;
         delete playSeed;delete cloudSeed;delete likeSeed;
+}
+
+void playList::listChange(){
+    ui->label_2->setText( QString::number(player::p->musicList.length()) + "首歌曲");
+    QListWidget *list= ui->listWidget;
+    list->clear();
+    for(int i = 0; i < player::p->musicList.length(); i++){
+        QListWidgetItem *item=new QListWidgetItem(list,i);
+        item->setSizeHint(QSize(256,75));
+        listSingle *w = new listSingle(list);
+        w->set( player::p->musicList.at(i)->name, player::p->musicList.at(i)->Author, i );
+        list->setItemWidget(item,w);
+    }
 }

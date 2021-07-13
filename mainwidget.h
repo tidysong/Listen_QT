@@ -11,6 +11,9 @@
 #include <QRect>
 #include <QTimer>
 #include <QEasingCurve>
+#include <QUrl>
+#include <QMimeData>
+#include <player.h>
 #include <localmusic.h>
 #include <downloadpage.h>
 #include <cloudlist.h>
@@ -45,7 +48,6 @@ private slots:
     void showList();
     void closeLyrics();
     void on_pushButton_clicked();
-
 private:
     Ui::MainWidget *ui;
     localMusic *localMusic_page;
@@ -55,9 +57,9 @@ private:
     playList *playlist_page;
     lyricsPage *lyrics_page;
     bool is_Press;
+    QPoint m_point;
     bool isListShow = false;
     bool isLyricsShow = false;
-    QPoint m_point;
     QEasingCurve curve;
     void initUI();
     void mousePressEvent(QMouseEvent *event);//进行鼠界面的拖动
@@ -66,6 +68,8 @@ private:
     void showEvent(QShowEvent *event);//恢复最小化事件
     void showListf();//展示音乐list
     void closeListf();//关闭音乐list
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 };
 
 #endif // MAINWIDGET_H

@@ -13,6 +13,9 @@ player::player(QObject *parent) : QObject(parent)
     connect(varplay, SIGNAL(positionChanged(qint64)), this,SLOT(updatePosition(qint64)));//进度改变
     connect(varplay, SIGNAL(durationChanged(qint64)), this, SLOT(updateDuration(qint64)));//时长改变
     connect(varplay, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(stateChanged(QMediaPlayer::State)));//播放状态改变
+
+    connect(varplay, SIGNAL(volumeChanged(int)), this, SLOT(volumeChanged(int)));//音量改变
+
 }
 void player::initConfig(){
     varplay->setVolume(50);//设置音量
@@ -20,6 +23,7 @@ void player::initConfig(){
 }
 
 playInfo* player::getInf(QString filePath){
+    qDebug() << filePath;
     QMediaInfo *q = new QMediaInfo;
     q->Open(filePath);
     playInfo *info = new playInfo();
@@ -35,7 +39,7 @@ playInfo* player::getInf(QString filePath){
     }else{
         info->Author = a;
     }
-    info->name = q->Title();
+    info->name = q->Title().isEmpty() ? q->CompleteName() : q->Title();
     delete q;
     return info;
 }
@@ -43,16 +47,22 @@ void player::addMusic(QString filePath){
     playInfo *info = getInf(filePath);
     musicList.append(info);
     varplaylist->addMedia(QUrl::fromLocalFile(filePath));
-
+    emit listChange();
 }
 void player::addMusic(QString filePath, int index){
     playInfo *info = getInf(filePath);
     musicList.insert(index,info);
     varplaylist->insertMedia(index, QUrl::fromLocalFile(filePath));
+    emit listChange();
 }
-
+void player::setVol(int position){
+    varplay->setVolume(position);
+}
 void player::play(){
     varplay->play();
+}
+void player::pause(){
+    varplay->pause();
 }
 void player::next(){
     varplaylist->next();
@@ -66,9 +76,14 @@ void player::setIndex(int index){
 }
 void player::move(int index){
     varplaylist->removeMedia(index);
+    musicList.removeAt(index);
+    emit listChange();
 }
 void player::clear(){
     varplaylist->clear();
+}
+void player::setPosition(qint64 position){
+    varplay->setPosition(position);
 }
 //SIGNAL
 void player::currentIndexChanged(int position){
@@ -87,4 +102,8 @@ void player::updateDuration(qint64 duration){
 }
 void player::stateChanged(QMediaPlayer::State newState){
     emit stateChange(newState);
+}
+
+void player::volumeChanged(int position){
+    emit volumeChange(position);
 }

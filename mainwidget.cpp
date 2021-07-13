@@ -55,8 +55,12 @@ void MainWidget::initUI(){
     connect(playlist_page,SIGNAL(closeList()),this,SLOT(closeList()));
 
 
-    curve; //动作曲线
+    player::p->addMusic("F:/毛不易 - 借.mp3");
+    player::p->setIndex(0);
+    //curve; //动作曲线
     curve.setType(QEasingCurve::InCubic); //动作曲线方式
+
+
 }
 
 void MainWidget::on_close_clicked()
@@ -78,6 +82,9 @@ void MainWidget::on_close_clicked()
 
 void MainWidget::mousePressEvent(QMouseEvent *event)
 {
+    if(isLyricsShow){
+        lyrics_page->volCheck(event->pos().x(), event->pos().y());
+    }
     if(isListShow && !(event->pos().x() >=752 && event->pos().x()  <= 1065) ){
         //list展示 且区域不在范围内
         isListShow = false;
@@ -123,7 +130,6 @@ void MainWidget::showEvent(QShowEvent *event){
     animation->setEndValue(1);
     animation->start();
 }
-
 void MainWidget::on_min_clicked()
 {
     //最小化窗口
@@ -229,4 +235,22 @@ void MainWidget::on_pushButton_clicked()
     pScaleAnimation->setEndValue(QPoint(0, 0));
     pScaleAnimation->setEasingCurve(curve);
     pScaleAnimation->start();
+}
+
+void MainWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    //如果为文件，则支持拖放
+    event->acceptProposedAction();
+}
+
+//当用户放下这个文件后，就会触发dropEvent事件
+void MainWidget::dropEvent(QDropEvent *event)
+{
+    //注意：这里如果有多文件存在，意思是用户一下子拖动了多个文件，而不是拖动一个目录
+    //如果想读取整个目录，则在不同的操作平台下，自己编写函数实现读取整个目录文件名
+    QList<QUrl> urls = event->mimeData()->urls();
+    if(urls.isEmpty())return;
+    foreach(QUrl url, urls) {
+        player::p->addMusic(url.toLocalFile());
+    }
 }

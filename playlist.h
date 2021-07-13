@@ -5,6 +5,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QMenu>
 #include <QAction>
+#include <player.h>
 #include <listsingle.h>
 namespace Ui {
 class playList;
@@ -21,6 +22,7 @@ public:
 private slots:
     void on_pushButton_4_clicked();
     void on_listWidget_customContextMenuRequested(const QPoint &pos);
+    void listChange();
 
 signals:
     void closeList();

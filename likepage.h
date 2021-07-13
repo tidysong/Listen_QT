@@ -2,7 +2,6 @@
 #define LIKEPAGE_H
 
 #include <QWidget>
-
 namespace Ui {
 class likePage;
 }

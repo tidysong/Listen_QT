@@ -95,6 +95,9 @@
 	border : 0px;
 	border-radius:10px;
 }
+#listWidget::Item{
+	margin-top : 10px;
+}
 #listWidget::Item:hover{
 	background-color : #E8E8E8;
 }
@@ -107,6 +110,18 @@
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::DropOnly</enum>
+    </property>
+    <property name="defaultDropAction">
+     <enum>Qt::CopyAction</enum>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::NoSelection</enum>
+    </property>
+    <property name="movement">
+     <enum>QListView::Static</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label">

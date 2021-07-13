@@ -27,13 +27,13 @@ bool readLyrics::process(){
 }
 int readLyrics::getIndex(qint64 position){
     for(int f=0;f<lrclist.length();f++){
-        if( position > lrclist.at(f).ms && position < lrclist.at(f+1).ms ){
+        if( f!=lrclist.length()-1&&position >= lrclist.at(f).ms && position < lrclist.at(f+1).ms || position>=lrclist.at(f).ms && f == lrclist.length()-1 ){
             return f;
         }
     }
 }
 QString readLyrics::getLyricText(int index){
-    if( index >= 0 && index <= lrclist.length() ){
+    if( index >= 0 && index < lrclist.length() ){
         return lrclist.at(index).word;
     }
 }

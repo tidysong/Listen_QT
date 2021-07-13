@@ -36,7 +36,6 @@ SOURCES += \
     readlyrics.cpp \
     listsingle.cpp \
     player.cpp \
-    player.cpp \
     qmediainfo.cpp \
     httpGP.cpp
 
@@ -53,7 +52,6 @@ HEADERS += \
     listsingle.h \
     player.h \
     qmediainfo.h \
-    player.h \
     httpGP.h
 
 FORMS += \
