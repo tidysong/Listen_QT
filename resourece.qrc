@@ -29,5 +29,8 @@
         <file>pic/pause_tg.png</file>
         <file>pic/radio.png</file>
         <file>pic/qus.png</file>
+        <file>pic/mode1.png</file>
+        <file>pic/mode2.png</file>
+        <file>pic/mode3.png</file>
     </qresource>
 </RCC>

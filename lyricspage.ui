@@ -456,6 +456,43 @@ QPushButton:pressed{
       <string/>
      </property>
     </widget>
+    <widget class="QPushButton" name="modeChange">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>50</y>
+       <width>25</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	background-color : rgba(0,0,0,0);
+	border : 0px;
+	border-radius : 10px;
+}
+
+QPushButton:hover{
+    background-color:#D7D7D7;
+}
+QPushButton:pressed{
+    background-color:#8F8F8F;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resourece.qrc">
+       <normaloff>:/pic/radio.png</normaloff>:/pic/radio.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </widget>
    </widget>
    <widget class="QListWidget" name="listWidget">
     <property name="geometry">
@@ -556,8 +593,6 @@ QSlider::sub-page:vertical{
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <zorder>listWidget</zorder>
-   <zorder>verticalSlider</zorder>
   </widget>
  </widget>
  <resources>
