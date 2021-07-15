@@ -5,23 +5,23 @@ HTTPGP::HTTPGP(QObject *parent) :
 {
 
 }
-QString HTTPGP::httpget(QString ht){//get
+void HTTPGP::httpget(QString ht){//get
     QNetworkRequest request;
     naManager = new QNetworkAccessManager;
     connect(naManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
     //Q_ASSERT(connRet);
     request.setUrl(QUrl(ht));
     QNetworkReply *reply = naManager->get(request);
-    return reply->readAll();
+
 }
-QString HTTPGP::httppost(QString ht,QString testData){//post
+void HTTPGP::httppost(QString ht,QString testData){//post
     QNetworkRequest request;
     naManager = new QNetworkAccessManager;
     connect(naManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
     //Q_ASSERT(connRet);
     request.setUrl(QUrl(ht));
     QNetworkReply *reply = naManager->post(request,testData.toUtf8());
-    return reply->readAll();
+
 }
 void HTTPGP::requestFinished(QNetworkReply* reply) {//reply
     // 获取http状态码
@@ -31,6 +31,9 @@ void HTTPGP::requestFinished(QNetworkReply* reply) {//reply
     }
     else {
         // 获取返回内容
-        //qDebug() << reply->readAll();
+        QByteArray bytes=reply->readAll();
+        QString string = bytes;
+        //qDebug() <<string;
+        emit RequestFinished(string);
     }
 }
