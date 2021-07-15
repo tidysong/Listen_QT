@@ -43,7 +43,8 @@ listSingle::listSingle(QWidget *parent) : QWidget(parent), ui(new Ui::listSingle
     anim3->setLoopCount(-1);
     anim3->start();
     connect(player::p, SIGNAL(stateChange(QMediaPlayer::State)), this, SLOT(stateChanged(QMediaPlayer::State)));
-    connect(player::p, SIGNAL(IndexChanged(int)), this, SLOT(IndexChanged(int)));
+    connect(player::p, SIGNAL(MediaChanged(const QMediaContent)), this, SLOT(MediaChanged(const QMediaContent)));
+
 }
 
 listSingle::~listSingle()
@@ -58,7 +59,7 @@ void listSingle::set(QString name,QString author,int i){
     connect(pTimer,SIGNAL(timeout()),this,SLOT(scrollCaption()));
 
     // 定时200毫秒
-    pTimer->start(300);
+    pTimer->start(1000);
     //ui->label->setText(name);
     ui->label_2->setText(author);
     ui->label->setToolTip(name);
@@ -71,8 +72,6 @@ void listSingle::set(QString name,QString author,int i){
         }
     }
 }
-
-
 void listSingle::stateChanged(QMediaPlayer::State newState){
     if(newState == QMediaPlayer::PlayingState){
         if(player::p->varplaylist->currentIndex() == i){
@@ -82,8 +81,7 @@ void listSingle::stateChanged(QMediaPlayer::State newState){
     }
     HideLine();
 }
-void listSingle::IndexChanged(int index){
-    qDebug() << index;
+void listSingle::MediaChanged(const QMediaContent &content){
     if( player::p->varplay->state() == QMediaPlayer::PlayingState){
         if(player::p->varplaylist->currentIndex() == i){
             ShowLine();
@@ -97,18 +95,19 @@ void listSingle::ShowLine(){
     ui->r2->setStyleSheet("QPushButton{background-color : #3393F9;border : 0px;}");
     ui->r3->setStyleSheet("QPushButton{background-color : #3393F9;border : 0px;}");
     ui->r4->setStyleSheet("QPushButton{background-color : #3393F9;border : 0px;}");
+    if( player::p->varplay->state() == QMediaPlayer::PlayingState){
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/pause_tg.png"),QSize(20,20));
+        ui->play->setIcon(myicon);
+        isPlay = true;
+    }
 
-    QIcon myicon;
-    myicon.addFile(tr(":/pic/pause_tg.png"),QSize(20,20));
-    ui->play->setIcon(myicon);
-    isPlay = true;
 }
 void listSingle::HideLine(){
     ui->r1->setStyleSheet("QPushButton{background-color:rgba(0,0,0,0);}");
     ui->r2->setStyleSheet("QPushButton{background-color:rgba(0,0,0,0);}");
     ui->r3->setStyleSheet("QPushButton{background-color:rgba(0,0,0,0);}");
     ui->r4->setStyleSheet("QPushButton{background-color:rgba(0,0,0,0);}");
-
     QIcon myicon;
     myicon.addFile(tr(":/pic/play_tg.png"),QSize(25,25));
     ui->play->setIcon(myicon);
@@ -121,7 +120,12 @@ void listSingle::on_play_clicked()
         //如果播放的是当前文件，则直接暂停
         player::p->pause();
     }else{
-        //如果播放的不是当前文件，则切换到当前歌曲播放
+        //如果播放的不是当前文件/或当前暂停，则切换到当前歌曲播放
+        qDebug() << player::p->varplaylist->currentIndex();
+        if(player::p->varplaylist->currentIndex() == i){
+            player::p->play();
+            return;
+        }
         player::p->setIndex(i);
         player::p->play();
     }

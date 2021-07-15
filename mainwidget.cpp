@@ -12,6 +12,7 @@ MainWidget::MainWidget(QWidget *parent) :
     animation->setEndValue(1);
     animation->start();
     initUI();
+    initConfig();
 }
 
 MainWidget::~MainWidget()
@@ -62,7 +63,23 @@ void MainWidget::initUI(){
 
 
 }
-
+void MainWidget::initConfig(){
+    Inifile *i = new Inifile;
+    QString mode = i->Readplaymode();
+    player::p->varplaylist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
+    if(mode.isEmpty()){
+        player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Loop);
+        i->Saveplaymode("1");
+    }else{
+        if( mode == "1"){
+            player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Loop);
+        }else if( mode == "2" ){
+            player::p->varplaylist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+        }else if( mode == "3" ){
+            player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Random);
+        }
+    }
+}
 void MainWidget::on_close_clicked()
 {
     //关闭按钮

@@ -31,6 +31,6 @@ void HTTPGP::requestFinished(QNetworkReply* reply) {//reply
     }
     else {
         // 获取返回内容
-        //qDebug() << reply->readAll();
+        return qDebug() << reply->readAll();
     }
 }

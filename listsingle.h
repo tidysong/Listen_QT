@@ -28,7 +28,7 @@ private:
     QString strScrollCation;
 private slots:
     void stateChanged(QMediaPlayer::State newState);
-    void IndexChanged(int index);
+    void MediaChanged(const QMediaContent &content);
     void on_play_clicked();
     void scrollCaption();
 };

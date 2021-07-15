@@ -6,6 +6,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsDropShadowEffect>
 #include <QMouseEvent>
+#include <service.h>
 namespace Ui {
 class login;
 }
@@ -20,6 +21,8 @@ public:
 
 private slots:
     void on_close_clicked();
+
+    void on_loginButton_clicked();
 
 private:
     Ui::login *ui;

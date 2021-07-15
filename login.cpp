@@ -69,3 +69,8 @@ void login::mouseReleaseEvent(QMouseEvent *event)
 
     is_Press = false;
 }
+
+void login::on_loginButton_clicked()
+{
+    service::login("","");
+}

@@ -11,12 +11,11 @@ class HTTPGP : public QObject
 public:
     QNetworkAccessManager * naManager;
     explicit HTTPGP(QObject *parent = 0);
-
+    QString httpget(QString ht);
+    QString httppost(QString ht,QString testData);
 signals:
 
 public slots:
-    void httpget(QString ht);
-    void httppost(QString ht,QString testData);
     void requestFinished(QNetworkReply* reply);
 };
 

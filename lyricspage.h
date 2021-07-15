@@ -14,8 +14,11 @@
 #include <QListWidgetItem>
 #include <QTime>
 #include <QFont>
+#include <QGraphicsDropShadowEffect>
 #include <readlyrics.h>
 #include <player.h>
+#include <inifile.h>
+#include <inifile.h>
 namespace Ui {
 class lyricsPage;
 }
@@ -58,6 +61,12 @@ private slots:
     void on_verticalSlider_valueChanged(int value);
     void volumeChange(int);
     void on_horizontalSlider_sliderReleased();
+    void MediaChanged(const QMediaContent &content);
+    void modeChange(QMediaPlaylist::PlaybackMode mode);
+    void on_pushButton_5_clicked();
+
+    void on_modeChange_clicked();
+    void stateChanged(QMediaPlayer::State newState);
 
 private:
     Ui::lyricsPage *ui;
@@ -76,8 +85,11 @@ private:
     bool VolShow = false;
     bool is_Press;
     QPoint m_point;
+    bool isJustOpen = true;
     void showVol();
     void hideVol();
+    void initUI();
+    void openLyrics(QString filePath);
 };
 
 #endif // LYRICSPAGE_H

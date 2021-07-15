@@ -30,7 +30,7 @@ public:
     void setIndex(int index);
     void next();
     void pre();
-    void move(int index);
+    void remove(int index);
     void clear();
     void setPosition(qint64 position);
     void setVol(int position);
@@ -43,12 +43,13 @@ public:
 signals:
 
     void MediaChanged(const QMediaContent &content);
-    void IndexChanged(int position);
     void PositionChanged(qint64 duration);
     void DurationChanged(qint64 duration);
     void stateChange(QMediaPlayer::State newState);
     void listChange();//播放列表变化
+    void IndexChanged(int position);
     void volumeChange(int volume);//音量变化
+    void modeChange(QMediaPlaylist::PlaybackMode mode);
 private slots:
     void currentMediaChanged(const QMediaContent &content);
     void currentIndexChanged(int position);
@@ -56,6 +57,7 @@ private slots:
     void updateDuration(qint64 duration);
     void stateChanged(QMediaPlayer::State newState);
     void volumeChanged(int volume);
+    void playbackModeChanged(QMediaPlaylist::PlaybackMode);
 };
 
 #endif // PLAYER_H

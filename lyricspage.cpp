@@ -7,18 +7,24 @@ lyricsPage::lyricsPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    initUI();
     //player::p->play();
+    connect(player::p, SIGNAL(MediaChanged(const QMediaContent)), this, SLOT(MediaChanged(const QMediaContent)));
     connect(player::p, SIGNAL(PositionChanged(qint64)), this, SLOT(PositionChanged(qint64)));
     connect(player::p, SIGNAL(DurationChanged(qint64)), this, SLOT(DurationChanged(qint64)));
     connect(player::p, SIGNAL(stateChange(QMediaPlayer::State)), this, SLOT(stateChange(QMediaPlayer::State)));
     connect(player::p, SIGNAL(volumeChange(int)), this, SLOT(volumeChange(int)));
+    connect(player::p, SIGNAL(modeChange(QMediaPlaylist::PlaybackMode)), this, SLOT(modeChange(QMediaPlaylist::PlaybackMode)));
+    connect(player::p, SIGNAL(stateChange(QMediaPlayer::State)), this, SLOT(stateChanged(QMediaPlayer::State)));
+    //openLyrics("");
+}
 
-    QFile file("F:/毛不易 - 借.lrc");
-    file.open(QIODevice::ReadOnly);
-    QTextStream stream(&file);
-    stream.setCodec( QTextCodec::codecForName("GB2312") );
-    r = new readLyrics(stream.readAll());
+lyricsPage::~lyricsPage()
+{
+    delete ui;
+}
 
+void lyricsPage::initUI(){
     normal = new QFont;                        //字体前后变化
     normalcolor = new QColor("#666666");       //字体前后变化
     now = new QFont;                           //字体前后变化
@@ -27,21 +33,13 @@ lyricsPage::lyricsPage(QWidget *parent) :
     now->setFamily("等线");
     normal->setPointSize(12);
     normal->setFamily("等线");
-    r->process();
-    line = r->lrclist.length();
-    for(int i = 0;i < line;i++){
-        QListWidgetItem *item = new QListWidgetItem(r->getLyricText(i));
-        item->setTextAlignment(0x0004 | 0x0080);
-        item->setFont(*normal);
-        item->setTextColor(*normalcolor);
-        labelList.append(item);
-        ui->listWidget->addItem(item);
-    }
-}
 
-lyricsPage::~lyricsPage()
-{
-    delete ui;
+
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect(this);
+    effect->setOffset(0, 1);//设置向哪个方向产生阴影效果(dx,dy)，(0,0)代表向四周发散
+    effect->setColor(QColor("#999999"));//设置阴影颜色
+    effect->setBlurRadius(20);//设定阴影的半径大小 30-40
+    ui->widget_3->setGraphicsEffect(effect);//应用至widget
 }
 void lyricsPage::on_close_clicked()
 {
@@ -64,6 +62,9 @@ void lyricsPage::DurationChanged(qint64 postion){
     ui->horizontalSlider->setPageStep(postion/10);
 }
 void lyricsPage::PositionChanged(qint64 postion){
+    if(isJustOpen){
+        return;
+    }
     ui->horizontalSlider->setValue(postion);
     ui->time1->setText(formatTime(postion));
     int index = r->getIndex(postion);
@@ -136,11 +137,28 @@ void lyricsPage::on_horizontalSlider_sliderMoved(int position)
 
 void lyricsPage::on_pushButton_3_clicked()
 {
+    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
+        //当前是单曲循环则采用index方式
+        if(player::p->musicList.length()  == player::p->varplaylist->currentIndex() + 1){
+            player::p->varplaylist->setCurrentIndex(0);
+        }else{
+            player::p->varplaylist->setCurrentIndex( player::p->varplaylist->currentIndex() + 1 );
+        }
+        return;
+    }
     player::p->next();
 }
 
 void lyricsPage::on_pushButton_2_clicked()
-{
+{    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
+        //当前是单曲循环则采用index方式
+        if(player::p->varplaylist->currentIndex() == 0){
+            player::p->varplaylist->setCurrentIndex( player::p->musicList.length() -1 );
+        }else{
+            player::p->varplaylist->setCurrentIndex( player::p->varplaylist->currentIndex() - 1 );
+        }
+        return;
+    }
     player::p->pre();
 }
 
@@ -148,7 +166,7 @@ void lyricsPage::on_pushButton_2_clicked()
 void lyricsPage::on_pushButton_clicked()
 {
 
-    player::p->addMusic("F:/毛不易 - 借.mp3");
+    player::p->addMusic("F:/毛不易.mp3");
 }
 
 void lyricsPage::on_pushButton_4_clicked()
@@ -165,8 +183,8 @@ void lyricsPage::on_pushButton_4_clicked()
 void lyricsPage::showVol(){
     QPropertyAnimation *anim = new QPropertyAnimation(ui->widget_3, "geometry");
     anim->setDuration(100);
-    anim->setKeyValueAt(0, QRect(590, 600, 80, 0));
-    anim->setKeyValueAt(1, QRect(590, 400, 80, 210));
+    anim->setKeyValueAt(0, QRect(600, 570, 60, 0));
+    anim->setKeyValueAt(1, QRect(600, 370, 60, 220));
     anim->setEasingCurve(QEasingCurve::InCubic);
     anim->start();
     ui->volRate->setText( QString::number(ui->verticalSlider->value()) + "%");
@@ -176,8 +194,8 @@ void lyricsPage::showVol(){
 void lyricsPage::hideVol(){
     QPropertyAnimation *anim = new QPropertyAnimation(ui->widget_3, "geometry");
     anim->setDuration(100);
-    anim->setKeyValueAt(0, QRect(590, 400, 80, 210));
-    anim->setKeyValueAt(1, QRect(590, 600, 80, 0));
+    anim->setKeyValueAt(0, QRect(600, 370, 60, 220));
+    anim->setKeyValueAt(1, QRect(600, 570, 60, 0));
     anim->setEasingCurve(QEasingCurve::InCubic);
     anim->start();
     ui->volRate->clear();
@@ -206,3 +224,88 @@ void lyricsPage::on_horizontalSlider_sliderReleased()
 }
 
 
+void lyricsPage::openLyrics(QString filePath){
+    filePath = filePath.replace(QRegularExpression("\\..*"),".lrc");
+    QFile file(filePath);
+    QString cont;
+    if(!file.open(QIODevice::ReadOnly)){
+        cont = "[00:00.000]当前歌曲暂无歌词";
+    }else{
+        QTextStream stream(&file);
+        stream.setCodec( QTextCodec::codecForName("GB2312") );
+        cont = stream.readAll();
+    }
+    r = new readLyrics(cont);
+    r->process();
+    line = r->lrclist.length();
+    ui->listWidget->clear();
+    labelList.clear();
+    for(int i = 0;i < line;i++){
+        QListWidgetItem *item = new QListWidgetItem(r->getLyricText(i));
+        item->setTextAlignment(0x0004 | 0x0080);
+        item->setFont(*normal);
+        item->setTextColor(*normalcolor);
+        labelList.append(item);
+        ui->listWidget->addItem(item);
+    }
+    //file.close();//销毁file
+}
+void lyricsPage::MediaChanged(const QMediaContent &content){
+    isJustOpen = false;
+    //#E2EAF2
+    //#DDDDDD
+    openLyrics(player::p->musicList.at(player::p->varplaylist->currentIndex())->filePath);
+    lastIndex = 0;
+
+}
+
+void lyricsPage::modeChange(QMediaPlaylist::PlaybackMode mode){
+    Inifile *i = new Inifile;
+    if(mode == QMediaPlaylist::CurrentItemInLoop){
+        //单曲循环
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/mode2.png"),QSize(25,25));
+        ui->modeChange->setIcon(myicon);
+        ui->modeChange->setToolTip("单曲循环");
+        i->Saveplaymode("2");
+
+    }else if(mode == QMediaPlaylist::Loop){
+        //列表循环
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/mode1.png"),QSize(25,25));
+        ui->modeChange->setIcon(myicon);
+        ui->modeChange->setToolTip("列表循环");
+        i->Saveplaymode("1");
+    }else if(mode == QMediaPlaylist::Random){
+        //随机播放
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/mode3.png"),QSize(25,25));
+        ui->modeChange->setIcon(myicon);
+        ui->modeChange->setToolTip("随机播放");
+        i->Saveplaymode("3");
+    }
+}
+
+void lyricsPage::on_pushButton_5_clicked()
+{
+    player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Random);
+}
+
+void lyricsPage::on_modeChange_clicked()
+{
+    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::Loop){
+        player::p->varplaylist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    }else if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
+        player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Random);
+    }else{
+        player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Loop);
+    }
+}
+
+void lyricsPage::stateChanged(QMediaPlayer::State newState){
+    if(newState == QMediaPlayer::PlayingState){
+        ui->widget->setStyleSheet(QString("background-color : qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 ") + QString("#E2EAF2") + QString(", stop:1 #FFFFFF);border-radius:10px;"));
+    }else{
+        ui->widget->setStyleSheet(QString("background-color : qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 ") + QString("#DDDDDD") + QString(", stop:1 #FFFFFF);border-radius:10px;"));
+    }
+}

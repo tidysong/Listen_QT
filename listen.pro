@@ -37,7 +37,9 @@ SOURCES += \
     listsingle.cpp \
     player.cpp \
     qmediainfo.cpp \
-    httpGP.cpp
+    httpGP.cpp \
+    inifile.cpp \
+    service.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -52,7 +54,9 @@ HEADERS += \
     listsingle.h \
     player.h \
     qmediainfo.h \
-    httpGP.h
+    httpGP.h \
+    inifile.h \
+    service.h
 
 FORMS += \
         mainwidget.ui \

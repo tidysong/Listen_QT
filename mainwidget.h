@@ -21,6 +21,7 @@
 #include <login.h>
 #include <playlist.h>
 #include <lyricspage.h>
+#include <inifile.h>
 namespace Ui {
 class MainWidget;
 }
@@ -56,7 +57,7 @@ private:
     likePage *like_page;
     playList *playlist_page;
     lyricsPage *lyrics_page;
-    bool is_Press;
+    bool is_Press = false;
     QPoint m_point;
     bool isListShow = false;
     bool isLyricsShow = false;
@@ -70,6 +71,7 @@ private:
     void closeListf();//关闭音乐list
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
+    void initConfig();
 };
 
 #endif // MAINWIDGET_H

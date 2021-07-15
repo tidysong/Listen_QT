@@ -15,6 +15,7 @@ player::player(QObject *parent) : QObject(parent)
     connect(varplay, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(stateChanged(QMediaPlayer::State)));//播放状态改变
 
     connect(varplay, SIGNAL(volumeChanged(int)), this, SLOT(volumeChanged(int)));//音量改变
+    connect(varplaylist, SIGNAL(playbackModeChanged(QMediaPlaylist::PlaybackMode)), this, SLOT(playbackModeChanged(QMediaPlaylist::PlaybackMode)));//播放模式改变
 
 }
 void player::initConfig(){
@@ -74,7 +75,7 @@ void player::pre(){
 void player::setIndex(int index){
     varplaylist->setCurrentIndex(index);
 }
-void player::move(int index){
+void player::remove(int index){
     varplaylist->removeMedia(index);
     musicList.removeAt(index);
     emit listChange();
@@ -106,4 +107,9 @@ void player::stateChanged(QMediaPlayer::State newState){
 
 void player::volumeChanged(int position){
     emit volumeChange(position);
+}
+
+
+void player::playbackModeChanged(QMediaPlaylist::PlaybackMode mode){
+    emit modeChange(mode);
 }
