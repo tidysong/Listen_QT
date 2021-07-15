@@ -3,6 +3,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include<QString>
 #include <QObject>
 
 class HTTPGP : public QObject
@@ -12,8 +13,9 @@ public:
     QNetworkAccessManager * naManager;
     explicit HTTPGP(QObject *parent = 0);
 
-signals:
 
+signals:
+    void RequestFinished(QString string);
 public slots:
     void httpget(QString ht);
     void httppost(QString ht,QString testData);

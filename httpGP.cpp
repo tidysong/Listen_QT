@@ -12,6 +12,7 @@ void HTTPGP::httpget(QString ht){//get
     //Q_ASSERT(connRet);
     request.setUrl(QUrl(ht));
     QNetworkReply *reply = naManager->get(request);
+
 }
 void HTTPGP::httppost(QString ht,QString testData){//post
     QNetworkRequest request;
@@ -20,6 +21,7 @@ void HTTPGP::httppost(QString ht,QString testData){//post
     //Q_ASSERT(connRet);
     request.setUrl(QUrl(ht));
     QNetworkReply *reply = naManager->post(request,testData.toUtf8());
+
 }
 void HTTPGP::requestFinished(QNetworkReply* reply) {//reply
     // 获取http状态码
@@ -29,6 +31,9 @@ void HTTPGP::requestFinished(QNetworkReply* reply) {//reply
     }
     else {
         // 获取返回内容
-        qDebug() << reply->readAll();
+        QByteArray bytes=reply->readAll();
+        QString string = bytes;
+        //qDebug() <<string;
+        emit RequestFinished(string);
     }
 }
