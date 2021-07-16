@@ -39,7 +39,8 @@ SOURCES += \
     qmediainfo.cpp \
     httpGP.cpp \
     inifile.cpp \
-    service.cpp
+    service.cpp \
+    fileproce.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -56,7 +57,8 @@ HEADERS += \
     qmediainfo.h \
     httpGP.h \
     inifile.h \
-    service.h
+    service.h \
+    fileproce.h
 
 FORMS += \
         mainwidget.ui \
