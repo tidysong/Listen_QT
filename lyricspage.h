@@ -45,6 +45,7 @@ private slots:
     void DurationChanged(qint64 postion);
 
     void on_listWidget_doubleClicked(const QModelIndex &index);
+
     void stateChange(QMediaPlayer::State newState);
     void on_play_clicked();
 
@@ -61,6 +62,7 @@ private slots:
     void on_verticalSlider_valueChanged(int value);
     void volumeChange(int);
     void on_horizontalSlider_sliderReleased();
+
     void MediaChanged(const QMediaContent &content);
     void modeChange(QMediaPlaylist::PlaybackMode mode);
     void on_pushButton_5_clicked();

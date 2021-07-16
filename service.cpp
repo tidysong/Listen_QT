@@ -4,34 +4,151 @@ service::service(QObject *parent) : QObject(parent)
 {
 
 }
-bool service::login(QString u,QString p){
+void service::login(QString u,QString p){
 
     HTTPGP *http = new HTTPGP;
-    QString res = http->httppost("http://localhost:3000/z_user/query",QString("username=%1&password=%2").arg(u).arg(p));
-    qDebug() << res;
+    connect(http, SIGNAL(RequestFinished(QString)), this, SLOT(loginReturn(QString)));
+    http->httppost(QString("http://localhost:3000/z_user/query"),QString("username=%1&password=%2").arg(u).arg(p));
+    //qDebug() << res;
+    //QJsonParseError parseJsonErr;
+    //QJsonDocument document = QJsonDocument::fromJson("{\"status\":\"200\",\"data\":[{\"id\":1,\"username\":\"啦啦啦\",\"avatar\":\"/uploads/20210619/bc7698478f5c416de6e26a96d497e09fa54ea08a.jpg\",\"age\":18,\"sex\":\"1\",\"status\":\"1\",\"create_time\":1624167027,\"password\":\"1\",\"update_time\":1626278508}]}",&parseJsonErr);
+    //if(!(parseJsonErr.error == QJsonParseError::NoError))
+    //{
+    //    qDebug()<<tr("解析json文件错误！");
+    //    return false;
+    //}
+    //
+    //QJsonObject jsonObject = document.object();
+    //if(jsonObject.contains(QStringLiteral("data")))
+    //    {
+    //        QJsonValue arrayValue = jsonObject.value(QStringLiteral("data"));
+    //        if(arrayValue.isArray())
+    //        {
+    //            QJsonArray array = arrayValue.toArray();
+    //            for(int i=0;i<array.size();i++)
+    //            {
+    //                QJsonValue iconArray = array.at(i);
+    //                QJsonObject icon = iconArray.toObject();
+    //                QString usn = icon["username"].toString();
+    //                qDebug()<< usn;
+    //            }
+    //        }
+    //    }
+}
+void service::search(QString title){
+    HTTPGP *http = new HTTPGP;
+    connect(http, SIGNAL(RequestFinished(QString)), this, SLOT(searchReturn(QString)));
+    http->httppost(QString("http://localhost:3000/z_music/query"),QString("title=%1").arg(title));
+
+}
+
+void service::cloud(){
+    Inifile *i = new Inifile;
+    HTTPGP *http = new HTTPGP;
+    connect(http, SIGNAL(RequestFinished(QString)), this, SLOT(cloudReturn(QString)));
+    http->httppost(QString("http://localhost:3000/z_cloud/query"),QString("userId=%1").arg(i->Readlogintime()));
+}
+void service::loginReturn(QString res){
+    //qDebug() << res;
     QJsonParseError parseJsonErr;
-    QJsonDocument document = QJsonDocument::fromJson("{\"status\":\"200\",\"data\":[{\"id\":1,\"username\":\"啦啦啦\",\"avatar\":\"/uploads/20210619/bc7698478f5c416de6e26a96d497e09fa54ea08a.jpg\",\"age\":18,\"sex\":\"1\",\"status\":\"1\",\"create_time\":1624167027,\"password\":\"1\",\"update_time\":1626278508}]}",&parseJsonErr);
+    QJsonDocument document = QJsonDocument::fromJson(res.toUtf8(),&parseJsonErr);
     if(!(parseJsonErr.error == QJsonParseError::NoError))
     {
         qDebug()<<tr("解析json文件错误！");
-        return false;
+        return;
     }
 
     QJsonObject jsonObject = document.object();
+    if(jsonObject.contains(QStringLiteral("data"))){
+        QJsonValue arrayValue = jsonObject.value(QStringLiteral("data"));
+        //qDebug() << arrayValue.toArray().size();
+        if( arrayValue.toArray().size() == 1){
+            QJsonArray array = arrayValue.toArray();
+            QJsonValue iconArray = array.at(0);
+            QJsonObject icon = iconArray.toObject();
+            Inifile *i = new Inifile;
+            i->Savelogintime(QString::number(icon["id"].toInt()));
+            emit LoginSuccess();
+            return;
+        }
+        //if(arrayValue.isArray())
+        //{
+        //    QJsonArray array = arrayValue.toArray();
+        //    for(int i=0;i<array.size();i++)
+        //    {
+        //        QJsonValue iconArray = array.at(i);
+        //        QJsonObject icon = iconArray.toObject();
+        //        QString usn = icon["username"].toString();
+        //        qDebug()<< usn;
+        //    }
+        //}
+    }
+    emit LoginFail();
+}
+
+
+void service::searchReturn(QString res){
+    QJsonParseError parseJsonErr;
+    QJsonDocument document = QJsonDocument::fromJson(res.toUtf8(),&parseJsonErr);
+    if(!(parseJsonErr.error == QJsonParseError::NoError))
+    {
+        qDebug()<<tr("解析json文件错误！");
+        return;
+    }
+
+    QJsonObject jsonObject = document.object();
+    searchList.clear();
     if(jsonObject.contains(QStringLiteral("data")))
+    {
+        QJsonValue arrayValue = jsonObject.value(QStringLiteral("data"));
+        if(arrayValue.isArray())
         {
-            QJsonValue arrayValue = jsonObject.value(QStringLiteral("data"));
-            if(arrayValue.isArray())
+            QJsonArray array = arrayValue.toArray();
+            for(int i=0;i<array.size();i++)
             {
-                QJsonArray array = arrayValue.toArray();
-                for(int i=0;i<array.size();i++)
-                {
-                    QJsonValue iconArray = array.at(i);
-                    QJsonObject icon = iconArray.toObject();
-                    QString usn = icon["username"].toString();
-                    qDebug()<< usn;
-                }
+                QJsonValue iconArray = array.at(i);
+                QJsonObject icon = iconArray.toObject();
+                //QString usn = icon["musicFile"].toString();
+                //qDebug()<< usn;//QString id ,QString title, QString url, QString lyricsUrl, QString author
+                searchInfo *s = new searchInfo(icon["id"].toString(), icon["title"].toString(), headUrl + icon["musicFile"].toString(), headUrl + icon["lrcFile"].toString(), icon["author"].toString(),icon["album"].toString(), icon["time"].toString());
+                searchList.append(s);
             }
         }
-return true;
+    }
+    emit searchSuccess(searchList);
 }
+
+
+
+void service::cloudReturn(QString res){
+    qDebug() << res;
+    QJsonParseError parseJsonErr;
+    QJsonDocument document = QJsonDocument::fromJson(res.toUtf8(),&parseJsonErr);
+    if(!(parseJsonErr.error == QJsonParseError::NoError))
+    {
+        qDebug()<<tr("解析json文件错误！");
+        return;
+    }
+
+    QJsonObject jsonObject = document.object();
+    cloudList.clear();
+    if(jsonObject.contains(QStringLiteral("data")))
+    {
+        QJsonValue arrayValue = jsonObject.value(QStringLiteral("data"));
+        if(arrayValue.isArray())
+        {
+            QJsonArray array = arrayValue.toArray();
+            for(int i=0;i<array.size();i++)
+            {
+                QJsonValue iconArray = array.at(i);
+                QJsonObject icon = iconArray.toObject();
+                QJsonObject arrayValue1 = icon.value(QStringLiteral("z_music")).toObject();
+
+                searchInfo *s = new searchInfo(arrayValue1["id"].toString(), arrayValue1["title"].toString(), headUrl + arrayValue1["musicFile"].toString(), headUrl + arrayValue1["lrcFile"].toString(), arrayValue1["author"].toString(),arrayValue1["album"].toString(), arrayValue1["time"].toString());
+                cloudList.append(s);
+            }
+        }
+    }
+    emit cloudSuccess(cloudList);
+}
+

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>cloudList</class>
- <widget class="QWidget" name="cloudList">
+ <class>searchOnline</class>
+ <widget class="QWidget" name="searchOnline">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,86 +13,12 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="playAll">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>60</y>
-     <width>121</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>幼圆</family>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">#playAll{
-	background-color : rgba(3,122,250,0.8);
-	color : white;
-	border-radius:10px;
-	border : 0px;
-	padding-left : 10px;
-	padding-right : 10px;
-	padding-top:4px;
-	padding-bottom : 4px;
-}
-#playAll:hover{
-	background-color : rgba(3,122,250,0.9);
-}
-#playAll:pressed{
-	background-color : rgba(3,122,250,1);
-}</string>
-   </property>
-   <property name="text">
-    <string>播放全部</string>
-   </property>
-   <property name="icon">
-    <iconset resource="resourece.qrc">
-     <normaloff>:/pic/playSelected.png</normaloff>:/pic/playSelected.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>16</width>
-     <height>16</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="searchText">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>60</y>
-     <width>201</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>幼圆</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">#searchText{
-	background-color:#E0E0E0;
-	border : 0px;
-	border-radius:15px;
-	padding-left : 10px;
-	padding-right : 30px;
-}</string>
-   </property>
-   <property name="placeholderText">
-    <string>搜索歌单音乐</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>0</y>
-     <width>101</width>
+     <width>301</width>
      <height>51</height>
     </rect>
    </property>
@@ -103,16 +29,16 @@
     </font>
    </property>
    <property name="text">
-    <string>云上音乐</string>
+    <string>找到0首单曲</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="musicList">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>110</y>
-     <width>758</width>
-     <height>351</height>
+     <y>60</y>
+     <width>760</width>
+     <height>401</height>
     </rect>
    </property>
    <property name="font">
@@ -148,9 +74,6 @@
 
 </string>
    </property>
-   <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
    <property name="showGrid">
     <bool>false</bool>
    </property>
@@ -164,7 +87,7 @@
     <bool>true</bool>
    </property>
    <attribute name="horizontalHeaderVisible">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <attribute name="horizontalHeaderCascadingSectionResizes">
     <bool>false</bool>
@@ -258,32 +181,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="searchIcon">
-   <property name="geometry">
-    <rect>
-     <x>755</x>
-     <y>63</y>
-     <width>32</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">#searchIcon{
-	background-color : rgba(0,0,0,0);
-	border : 0px;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="resourece.qrc">
-     <normaloff>:/pic/search.png</normaloff>:/pic/search.png</iconset>
-   </property>
-  </widget>
  </widget>
- <resources>
-  <include location="resourece.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

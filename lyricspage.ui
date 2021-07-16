@@ -97,9 +97,9 @@ border-radius:10px;
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>313</x>
+      <x>242</x>
       <y>40</y>
-      <width>400</width>
+      <width>531</width>
       <height>60</height>
      </rect>
     </property>

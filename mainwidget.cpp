@@ -1,6 +1,6 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
-
+bool MainWidget::isLogin = false;
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWidget)
@@ -11,8 +11,22 @@ MainWidget::MainWidget(QWidget *parent) :
     animation->setStartValue(0);
     animation->setEndValue(1);
     animation->start();
+
+    connect(player::p, SIGNAL(MediaChanged(const QMediaContent)), this, SLOT(MediaChanged(const QMediaContent)));
+    connect(player::p, SIGNAL(PositionChanged(qint64)), this, SLOT(PositionChanged(qint64)));
+    connect(player::p, SIGNAL(DurationChanged(qint64)), this, SLOT(DurationChanged(qint64)));
+    connect(player::p, SIGNAL(stateChange(QMediaPlayer::State)), this, SLOT(stateChange(QMediaPlayer::State)));
+    //connect(player::p, SIGNAL(volumeChange(int)), this, SLOT(volumeChange(int)));
+    connect(player::p, SIGNAL(modeChange(QMediaPlaylist::PlaybackMode)), this, SLOT(modeChange(QMediaPlaylist::PlaybackMode)));
+
+
     initUI();
     initConfig();
+
+
+
+    //loading *load = new loading;
+    //load->show();
 }
 
 MainWidget::~MainWidget()
@@ -39,10 +53,12 @@ void MainWidget::initUI(){
     download_page = new downloadPage(this);
     cloud_page = new cloudList(this);
     like_page = new likePage(this);
+    search_page = new searchOnline(this);
     ui->stackedWidget->addWidget(localMusic_page);//添加至
     ui->stackedWidget->addWidget(download_page);
     ui->stackedWidget->addWidget(cloud_page);
     ui->stackedWidget->addWidget(like_page);
+    ui->stackedWidget->addWidget(search_page);
     ui->stackedWidget->setCurrentWidget(localMusic_page);//设置默认widget
     ui->menu->item(0)->setSelected(true);
 
@@ -55,6 +71,11 @@ void MainWidget::initUI(){
     playlist_page->hide();
     connect(playlist_page,SIGNAL(closeList()),this,SLOT(closeList()));
 
+    QGraphicsDropShadowEffect *effect1 = new QGraphicsDropShadowEffect(this);
+    effect1->setOffset(0, 1);//设置向哪个方向产生阴影效果(dx,dy)，(0,0)代表向四周发散
+    effect1->setColor(QColor("#999999"));//设置阴影颜色
+    effect1->setBlurRadius(20);//设定阴影的半径大小 30-40
+    ui->widget_4->setGraphicsEffect(effect1);//应用至widget
 
     player::p->addMusic("F:/毛不易 - 借.mp3");
     player::p->setIndex(0);
@@ -65,6 +86,15 @@ void MainWidget::initUI(){
 }
 void MainWidget::initConfig(){
     Inifile *i = new Inifile;
+    //读取登录信息
+    if( !(i->Readpassword().isEmpty() && i->Readusername().isEmpty()) ){
+        //以前登录成功过
+        login *temp = new login();
+        connect(temp,SIGNAL(logSuccess()),this,SLOT(logSuccess()));
+        temp->set(i->Readusername(),i->Readpassword());
+        temp->show();
+    }
+    //读取播放顺序
     QString mode = i->Readplaymode();
     player::p->varplaylist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
     if(mode.isEmpty()){
@@ -99,6 +129,9 @@ void MainWidget::on_close_clicked()
 
 void MainWidget::mousePressEvent(QMouseEvent *event)
 {
+    if(VolShow){
+        hideVol();
+    }
     if(isLyricsShow){
         lyrics_page->volCheck(event->pos().x(), event->pos().y());
     }
@@ -180,7 +213,12 @@ void MainWidget::on_menu_clicked(const QModelIndex &index)
 
 void MainWidget::on_avatar_clicked()
 {
+    if(MainWidget::isLogin){
+        //已经登录过
+        return;
+    }
     login *temp = new login();
+    connect(temp,SIGNAL(logSuccess()),this,SLOT(logSuccess()));
     temp->show();
 }
 
@@ -270,4 +308,195 @@ void MainWidget::dropEvent(QDropEvent *event)
     foreach(QUrl url, urls) {
         player::p->addMusic(url.toLocalFile());
     }
+}
+
+
+void MainWidget::logSuccess(){
+    QIcon myicon;
+    myicon.addFile(tr(":/pic/Login.png"),QSize(100,100));
+    ui->avatar->setIcon(myicon);
+
+    Inifile *ifile = new Inifile;
+    ui->user->setText("欢迎您，" + ifile->Readusername());
+    MainWidget::isLogin = true;
+    cloud_page->load();
+}
+
+void MainWidget::on_searchText_returnPressed()
+{
+    ui->menu->item(0)->setSelected(false);
+    ui->menu->item(1)->setSelected(false);
+    ui->menu->item(2)->setSelected(false);
+    ui->menu->item(3)->setSelected(false);
+    ui->stackedWidget->setCurrentWidget(search_page);
+    search_page->set(ui->searchText->text());
+}
+
+
+QString MainWidget::formatTime(qint64 ms)
+{
+    int ss = 1000;
+    int mi = ss * 60;
+    int hh = mi * 60;
+    int dd = hh * 24;
+    long day = ms / dd;
+    long hour = (ms - day * dd) / hh;
+    long minute = (ms - day * dd - hour * hh) / mi;
+    long second = (ms - day * dd - hour * hh - minute * mi) / ss;
+    QString min = QString::number(minute,10).sprintf("%02d",minute);
+    QString sec = QString::number(second,10).sprintf("%02d",second);
+    return min + ":" + sec ;
+}
+void MainWidget::DurationChanged(qint64 postion){
+    ui->time2->setText(formatTime(postion));
+    ui->horizontalSlider->setRange(0,postion);
+    ui->horizontalSlider->setEnabled(postion>0);
+    ui->horizontalSlider->setPageStep(postion/10);
+}
+void MainWidget::PositionChanged(qint64 postion){
+    ui->horizontalSlider->setValue(postion);
+    ui->time1->setText(formatTime(postion));
+}
+
+
+void MainWidget::stateChange(QMediaPlayer::State newState){
+    if(newState == QMediaPlayer::PlayingState){
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/pause.png"),QSize(25,25));
+        ui->play->setIcon(myicon);
+    }else if(newState == QMediaPlayer::PausedState){
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/play.png"),QSize(25,25));
+        ui->play->setIcon(myicon);
+    }
+}
+
+void MainWidget::MediaChanged(const QMediaContent &content){
+    //isJustOpen = false;
+    ui->label->setText(player::p->musicList.at(player::p->varplaylist->currentIndex())->name);
+    ui->label_2->setText(player::p->musicList.at(player::p->varplaylist->currentIndex())->Author);
+
+}
+
+void MainWidget::modeChange(QMediaPlaylist::PlaybackMode mode){
+    Inifile *i = new Inifile;
+    if(mode == QMediaPlaylist::CurrentItemInLoop){
+        //单曲循环
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/mode2.png"),QSize(25,25));
+        ui->modeChange->setIcon(myicon);
+        ui->modeChange->setToolTip("单曲循环");
+        i->Saveplaymode("2");
+
+    }else if(mode == QMediaPlaylist::Loop){
+        //列表循环
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/mode1.png"),QSize(25,25));
+        ui->modeChange->setIcon(myicon);
+        ui->modeChange->setToolTip("列表循环");
+        i->Saveplaymode("1");
+    }else if(mode == QMediaPlaylist::Random){
+        //随机播放
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/mode3.png"),QSize(25,25));
+        ui->modeChange->setIcon(myicon);
+        ui->modeChange->setToolTip("随机播放");
+        i->Saveplaymode("3");
+    }
+}
+
+
+void MainWidget::on_play_clicked()
+{
+    if(player::p->varplay->state() == QMediaPlayer::PlayingState){
+        player::p->pause();
+    }else{
+        player::p->play();
+    }
+}
+
+void MainWidget::on_pushButton_2_clicked()
+{
+    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
+        //当前是单曲循环则采用index方式
+        if(player::p->varplaylist->currentIndex() == 0){
+            player::p->varplaylist->setCurrentIndex( player::p->musicList.length() -1 );
+        }else{
+            player::p->varplaylist->setCurrentIndex( player::p->varplaylist->currentIndex() - 1 );
+        }
+        return;
+    }
+    player::p->pre();
+}
+
+void MainWidget::on_pushButton_3_clicked()
+{
+    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
+        //当前是单曲循环则采用index方式
+        if(player::p->musicList.length()  == player::p->varplaylist->currentIndex() + 1){
+            player::p->varplaylist->setCurrentIndex(0);
+        }else{
+            player::p->varplaylist->setCurrentIndex( player::p->varplaylist->currentIndex() + 1 );
+        }
+        return;
+    }
+    player::p->next();
+}
+
+void MainWidget::on_modeChange_clicked()
+{
+    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::Loop){
+        player::p->varplaylist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    }else if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
+        player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Random);
+    }else{
+        player::p->varplaylist->setPlaybackMode(QMediaPlaylist::Loop);
+    }
+}
+
+void MainWidget::on_pushButton_5_clicked()
+{
+    if(VolShow){
+        hideVol();
+    }else{
+        showVol();
+    }
+}
+
+void MainWidget::showVol(){
+    QPropertyAnimation *anim = new QPropertyAnimation(ui->widget_4, "geometry");
+    anim->setDuration(100);
+    anim->setKeyValueAt(0, QRect(703, 570, 60, 0));
+    anim->setKeyValueAt(1, QRect(703, 370, 60, 220));
+    anim->setEasingCurve(QEasingCurve::InCubic);
+    anim->start();
+    ui->volRate->setText( QString::number(ui->verticalSlider->value()) + "%");
+    VolShow = true;
+}
+
+void MainWidget::hideVol(){
+    QPropertyAnimation *anim = new QPropertyAnimation(ui->widget_4, "geometry");
+    anim->setDuration(100);
+    anim->setKeyValueAt(0, QRect(703, 370, 60, 220));
+    anim->setKeyValueAt(1, QRect(703, 570, 60, 0));
+    anim->setEasingCurve(QEasingCurve::InCubic);
+    anim->start();
+    ui->volRate->clear();
+    VolShow = false;
+}
+
+void MainWidget::on_verticalSlider_valueChanged(int value)
+{
+    player::p->setVol(value);
+    ui->volRate->setText(QString::number(value) + "%");
+}
+
+void MainWidget::on_horizontalSlider_sliderMoved(int position)
+{
+    prePosition = position;
+}
+
+void MainWidget::on_horizontalSlider_sliderReleased()
+{
+    player::p->setPosition(prePosition);
 }

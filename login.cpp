@@ -19,7 +19,12 @@ login::~login()
     delete ui;
 }
 
-
+void login::set(QString u,QString p){
+    isAutoLogin = true;
+    ui->username->setText(u);
+    ui->password->setText(p);
+    on_loginButton_clicked();
+}
 void login::initUI(){
     setWindowFlags(Qt::FramelessWindowHint);//设置底无边框
     setAttribute(Qt::WA_TranslucentBackground);//设置底透明
@@ -72,5 +77,51 @@ void login::mouseReleaseEvent(QMouseEvent *event)
 
 void login::on_loginButton_clicked()
 {
-    service::login("","");
+    service *login = new service;
+    connect(login , SIGNAL(LoginSuccess()), this , SLOT(LoginSuccess()));
+    connect(login , SIGNAL(LoginFail()), this , SLOT(LoginFail()));
+    login->login(ui->username->text(),ui->password->text());
+}
+
+
+void login::LoginSuccess(){
+    MyDialog *dialog = new MyDialog;
+    connect(dialog , SIGNAL(sendClose()), this , SLOT(sendClose()));
+    if(isAutoLogin){
+        emit logSuccess();
+        close();
+        return;
+    }else{
+        dialog->set(1,QString("登录成功！"),5);
+    }
+    Inifile *i = new Inifile;
+    i->Saveusername(ui->username->text());
+    i->Savepassword(ui->password->text());
+    dialog->show();
+    emit logSuccess();
+    close();
+}
+
+void login::LoginFail(){
+    MyDialog *dialog = new MyDialog;
+    connect(dialog , SIGNAL(sendClose()), this , SLOT(sendClose()));
+    dialog->set(0,QString("用户名或密码错误！"),5);
+    dialog->show();
+    emit logFail();
+}
+
+void login::sendClose(){
+    close();
+}
+
+void login::on_sign_clicked()
+{
+    sigUp *sig = new sigUp();
+    connect(sig,SIGNAL(signReturn()),this,SLOT(signReturn()));
+    sig->set(ui->password->text());
+    sig->show();
+}
+
+void login::signReturn(){
+    qDebug() << "注册成功！";
 }

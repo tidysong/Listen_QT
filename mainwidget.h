@@ -20,8 +20,10 @@
 #include <likepage.h>
 #include <login.h>
 #include <playlist.h>
+#include <searchonline.h>
 #include <lyricspage.h>
 #include <inifile.h>
+#include <loading.h>
 namespace Ui {
 class MainWidget;
 }
@@ -33,7 +35,7 @@ class MainWidget : public QWidget
 public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
-
+    static bool isLogin;
 private slots:
     void on_close_clicked();
 
@@ -49,6 +51,31 @@ private slots:
     void showList();
     void closeLyrics();
     void on_pushButton_clicked();
+    void logSuccess();
+    void on_searchText_returnPressed();
+
+
+    void PositionChanged(qint64 postion);
+    void DurationChanged(qint64 postion);
+    void MediaChanged(const QMediaContent &content);
+    void modeChange(QMediaPlaylist::PlaybackMode mode);
+    void stateChange(QMediaPlayer::State newState);
+    void on_play_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_modeChange_clicked();
+
+    void on_pushButton_5_clicked();
+
+    void on_verticalSlider_valueChanged(int value);
+
+    void on_horizontalSlider_sliderMoved(int position);
+
+    void on_horizontalSlider_sliderReleased();
+
 private:
     Ui::MainWidget *ui;
     localMusic *localMusic_page;
@@ -56,6 +83,7 @@ private:
     cloudList *cloud_page;
     likePage *like_page;
     playList *playlist_page;
+    searchOnline *search_page;
     lyricsPage *lyrics_page;
     bool is_Press = false;
     QPoint m_point;
@@ -72,6 +100,12 @@ private:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
     void initConfig();
+    QString formatTime(qint64 ms);
+
+    void showVol();
+    void hideVol();
+    bool VolShow = false;
+    int prePosition = 0;
 };
 
 #endif // MAINWIDGET_H

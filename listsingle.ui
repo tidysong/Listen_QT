@@ -34,7 +34,7 @@
     </font>
    </property>
    <property name="text">
-    <string>借</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -53,7 +53,7 @@
     </font>
    </property>
    <property name="text">
-    <string>毛不易</string>
+    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="play">

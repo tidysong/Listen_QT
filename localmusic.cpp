@@ -28,7 +28,7 @@ void localMusic::initUI(){
     ui->musicList->setEditTriggers(QAbstractItemView::NoEditTriggers);//禁止修改
     ui->musicList->verticalHeader()->setVisible(false); //隐藏列表头
     ui->musicList->setSelectionMode(QAbstractItemView::SingleSelection);//只选一行
-
+    ui->musicList->horizontalHeader()->setVisible(true);
     int RowCont;
     RowCont=ui->musicList->rowCount();
     ui->musicList->insertRow(RowCont);

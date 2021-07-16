@@ -39,7 +39,12 @@ SOURCES += \
     qmediainfo.cpp \
     httpGP.cpp \
     inifile.cpp \
-    service.cpp
+    service.cpp \
+    mydialog.cpp \
+    searchonline.cpp \
+    loading.cpp \
+    searchinfo.cpp \
+    sigup.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -56,7 +61,12 @@ HEADERS += \
     qmediainfo.h \
     httpGP.h \
     inifile.h \
-    service.h
+    service.h \
+    mydialog.h \
+    searchonline.h \
+    loading.h \
+    searchinfo.h \
+    sigup.h
 
 FORMS += \
         mainwidget.ui \
@@ -67,7 +77,11 @@ FORMS += \
     login.ui \
     playlist.ui \
     lyricspage.ui \
-    listsingle.ui
+    listsingle.ui \
+    mydialog.ui \
+    searchonline.ui \
+    loading.ui \
+    sigup.ui
 
 RESOURCES += \
     resourece.qrc

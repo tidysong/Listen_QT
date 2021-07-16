@@ -150,7 +150,8 @@ void lyricsPage::on_pushButton_3_clicked()
 }
 
 void lyricsPage::on_pushButton_2_clicked()
-{    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
+{
+    if(player::p->varplaylist->playbackMode() == QMediaPlaylist::CurrentItemInLoop){
         //当前是单曲循环则采用index方式
         if(player::p->varplaylist->currentIndex() == 0){
             player::p->varplaylist->setCurrentIndex( player::p->musicList.length() -1 );
@@ -187,6 +188,7 @@ void lyricsPage::showVol(){
     anim->setKeyValueAt(1, QRect(600, 370, 60, 220));
     anim->setEasingCurve(QEasingCurve::InCubic);
     anim->start();
+    ui->verticalSlider->setValue(player::p->varplay->volume());
     ui->volRate->setText( QString::number(ui->verticalSlider->value()) + "%");
     VolShow = true;
 }
@@ -209,7 +211,10 @@ void lyricsPage::on_verticalSlider_valueChanged(int value)
 }
 
 void lyricsPage::volumeChange(int position){
-    ui->verticalSlider->setValue(position);
+    if(VolShow){
+        ui->verticalSlider->setValue(position);
+    }
+
 }
 
 void lyricsPage::volCheck(int x,int y){
@@ -254,6 +259,8 @@ void lyricsPage::MediaChanged(const QMediaContent &content){
     isJustOpen = false;
     //#E2EAF2
     //#DDDDDD
+    ui->label->setText(player::p->musicList.at(player::p->varplaylist->currentIndex())->name);
+    ui->label_2->setText(player::p->musicList.at(player::p->varplaylist->currentIndex())->Author);
     openLyrics(player::p->musicList.at(player::p->varplaylist->currentIndex())->filePath);
     lastIndex = 0;
 

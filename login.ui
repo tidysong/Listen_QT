@@ -116,6 +116,9 @@
 	padding-left :40px;
 }</string>
     </property>
+    <property name="text">
+     <string>test</string>
+    </property>
     <property name="placeholderText">
      <string>请输入用户名</string>
     </property>
@@ -141,6 +144,9 @@
 	border-radius : 20px;
 	padding-left : 40px;
 }</string>
+    </property>
+    <property name="text">
+     <string>1</string>
     </property>
     <property name="echoMode">
      <enum>QLineEdit::Password</enum>

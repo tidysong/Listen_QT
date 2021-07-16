@@ -1,21 +1,19 @@
-#include "cloudlist.h"
-#include "ui_cloudlist.h"
+#include "searchonline.h"
+#include "ui_searchonline.h"
 
-cloudList::cloudList(QWidget *parent) :
+searchOnline::searchOnline(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::cloudList)
+    ui(new Ui::searchOnline)
 {
     ui->setupUi(this);
     initUI();
 }
 
-cloudList::~cloudList()
+searchOnline::~searchOnline()
 {
     delete ui;
 }
-
-
-void cloudList::initUI(){
+void searchOnline::initUI(){
     ui->musicList->setColumnWidth(0,60);
     ui->musicList->setColumnWidth(1,300);
     ui->musicList->setColumnWidth(2,150);
@@ -30,54 +28,20 @@ void cloudList::initUI(){
     ui->musicList->verticalHeader()->setVisible(false); //隐藏列表头
     ui->musicList->setSelectionMode(QAbstractItemView::SingleSelection);//只选一行
     ui->musicList->horizontalHeader()->setVisible(true);
-    int RowCont;
-    RowCont=ui->musicList->rowCount();
-    ui->musicList->insertRow(RowCont);
-    ui->musicList->setItem(RowCont,0,new QTableWidgetItem("01"));
-    ui->musicList->setItem(RowCont,1,new QTableWidgetItem("浪费"));
-    ui->musicList->setItem(RowCont,2,new QTableWidgetItem("林宥嘉"));
-    ui->musicList->setItem(RowCont,3,new QTableWidgetItem("LIVE"));
-    ui->musicList->setItem(RowCont,4,new QTableWidgetItem("04:30"));
 }
-
-void cloudList::on_searchText_textChanged(const QString &arg1)
-{
-    //对搜索框尾部的按钮处理
-    if(arg1.length() > 0){
-        QIcon myicon;
-        myicon.addFile(tr(":/pic/close.png"));
-        ui->searchIcon->setIcon(myicon);
-        ui->searchIcon->setCursor(Qt::PointingHandCursor);//手型
-    }else if(arg1.length() == 0){
-        QIcon myicon;
-        myicon.addFile(tr(":/pic/search.png"));
-        ui->searchIcon->setIcon(myicon);
-        ui->searchIcon->setCursor(Qt::ArrowCursor);//箭型
-    }
-}
-
-void cloudList::on_searchIcon_clicked()
-{
-    if(ui->searchText->text().length() != 0){
-        ui->searchText->setText("");
-    }
-}
-
-
-void cloudList::load(){
-    service *l = new service;
-
-    connect(l, SIGNAL(cloudSuccess(QList<searchInfo*>)), this, SLOT(cloudSuccess(QList<searchInfo*>)));
-    l->cloud();
-}
-
-
-void cloudList::cloudSuccess(QList<searchInfo*> list){
+void searchOnline::set(QString title){
+    //搜索
     for(int row = ui->musicList->rowCount() - 1;row >= 0; row--)
     {
         ui->musicList->removeRow(row);
     }
+    service *search = new service;
+    connect(search, SIGNAL(searchSuccess(QList<searchInfo*>)), this, SLOT(searchSuccess(QList<searchInfo*>)));
+    search->search(title);
+}
+void searchOnline::searchSuccess(QList<searchInfo*> list){
     ui->musicList->clearContents();
+    ui->label->setText(QString("找到%1首单曲").arg(list.length()));
     for(int i = 0; i < list.length(); i++){
         int RowCont;
         RowCont=ui->musicList->rowCount();

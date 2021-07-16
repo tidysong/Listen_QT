@@ -32,5 +32,8 @@
         <file>pic/mode1.png</file>
         <file>pic/mode2.png</file>
         <file>pic/mode3.png</file>
+        <file>pic/Login.png</file>
+        <file>pic/loading.png</file>
+        <file>pic/loading1.gif</file>
     </qresource>
 </RCC>
