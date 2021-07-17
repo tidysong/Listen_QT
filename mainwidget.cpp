@@ -25,8 +25,7 @@ MainWidget::MainWidget(QWidget *parent) :
 
 
 
-    //loading *load = new loading;
-    //load->show();
+
 }
 
 MainWidget::~MainWidget()
@@ -54,6 +53,7 @@ void MainWidget::initUI(){
     cloud_page = new cloudList(this);
     like_page = new likePage(this);
     search_page = new searchOnline(this);
+    connect(search_page, SIGNAL(succ()), this, SLOT(search_succ()));
     ui->stackedWidget->addWidget(localMusic_page);//添加至
     ui->stackedWidget->addWidget(download_page);
     ui->stackedWidget->addWidget(cloud_page);
@@ -82,7 +82,8 @@ void MainWidget::initUI(){
     //curve; //动作曲线
     curve.setType(QEasingCurve::InCubic); //动作曲线方式
 
-
+    load = new loading(this);
+    load->hide();
 }
 void MainWidget::initConfig(){
     Inifile *i = new Inifile;
@@ -324,6 +325,7 @@ void MainWidget::logSuccess(){
 
 void MainWidget::on_searchText_returnPressed()
 {
+    showLoad();
     ui->menu->item(0)->setSelected(false);
     ui->menu->item(1)->setSelected(false);
     ui->menu->item(2)->setSelected(false);
@@ -499,4 +501,15 @@ void MainWidget::on_horizontalSlider_sliderMoved(int position)
 void MainWidget::on_horizontalSlider_sliderReleased()
 {
     player::p->setPosition(prePosition);
+}
+void MainWidget::showLoad(){
+    load->setGeometry(437,231,300,169);
+    load->show();
+}
+void MainWidget::hideLoad(){
+    load->setGeometry(437,231,0,0);
+    load->show();
+}
+void MainWidget::search_succ(){
+    hideLoad();
 }

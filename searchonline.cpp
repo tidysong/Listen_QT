@@ -38,8 +38,10 @@ void searchOnline::set(QString title){
     service *search = new service;
     connect(search, SIGNAL(searchSuccess(QList<searchInfo*>)), this, SLOT(searchSuccess(QList<searchInfo*>)));
     search->search(title);
+    ui->label->setText("正在搜索有关“" + title + "”" + "的歌曲");
 }
 void searchOnline::searchSuccess(QList<searchInfo*> list){
+    emit succ();
     ui->musicList->clearContents();
     ui->label->setText(QString("找到%1首单曲").arg(list.length()));
     for(int i = 0; i < list.length(); i++){

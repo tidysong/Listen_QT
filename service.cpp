@@ -8,7 +8,7 @@ void service::login(QString u,QString p){
 
     HTTPGP *http = new HTTPGP;
     connect(http, SIGNAL(RequestFinished(QString)), this, SLOT(loginReturn(QString)));
-    http->httppost(QString("http://localhost:3000/z_user/query"),QString("username=%1&password=%2").arg(u).arg(p));
+    http->httppost(QString("http://42.193.148.10:3000/z_user/query"),QString("username=%1&password=%2").arg(u).arg(p));
     //qDebug() << res;
     //QJsonParseError parseJsonErr;
     //QJsonDocument document = QJsonDocument::fromJson("{\"status\":\"200\",\"data\":[{\"id\":1,\"username\":\"啦啦啦\",\"avatar\":\"/uploads/20210619/bc7698478f5c416de6e26a96d497e09fa54ea08a.jpg\",\"age\":18,\"sex\":\"1\",\"status\":\"1\",\"create_time\":1624167027,\"password\":\"1\",\"update_time\":1626278508}]}",&parseJsonErr);
@@ -38,7 +38,7 @@ void service::login(QString u,QString p){
 void service::search(QString title){
     HTTPGP *http = new HTTPGP;
     connect(http, SIGNAL(RequestFinished(QString)), this, SLOT(searchReturn(QString)));
-    http->httppost(QString("http://localhost:3000/z_music/query"),QString("title=%1").arg(title));
+    http->httppost(QString("http://42.193.148.10:3000/z_music/query"),QString("title=%1").arg(title));
 
 }
 
@@ -46,7 +46,7 @@ void service::cloud(){
     Inifile *i = new Inifile;
     HTTPGP *http = new HTTPGP;
     connect(http, SIGNAL(RequestFinished(QString)), this, SLOT(cloudReturn(QString)));
-    http->httppost(QString("http://localhost:3000/z_cloud/query"),QString("userId=%1").arg(i->Readlogintime()));
+    http->httppost(QString("http://42.193.148.10:3000/z_cloud/query"),QString("userId=%1").arg(i->Readlogintime()));
 }
 void service::loginReturn(QString res){
     //qDebug() << res;

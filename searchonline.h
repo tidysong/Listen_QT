@@ -11,7 +11,8 @@ class searchOnline;
 class searchOnline : public QWidget
 {
     Q_OBJECT
-
+signals:
+    void succ();
 public:
     explicit searchOnline(QWidget *parent = 0);
     ~searchOnline();

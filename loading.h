@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::loading *ui;
+
+    QMovie *movie;
 };
 
 #endif // LOADING_H

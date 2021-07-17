@@ -75,7 +75,7 @@ private slots:
     void on_horizontalSlider_sliderMoved(int position);
 
     void on_horizontalSlider_sliderReleased();
-
+    void search_succ();
 private:
     Ui::MainWidget *ui;
     localMusic *localMusic_page;
@@ -106,6 +106,9 @@ private:
     void hideVol();
     bool VolShow = false;
     int prePosition = 0;
+    loading *load;
+    void hideLoad();
+    void showLoad();
 };
 
 #endif // MAINWIDGET_H
