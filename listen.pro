@@ -40,11 +40,7 @@ SOURCES += \
     httpGP.cpp \
     inifile.cpp \
     service.cpp \
-    mydialog.cpp \
-    searchonline.cpp \
-    loading.cpp \
-    searchinfo.cpp \
-    sigup.cpp
+    fileproce.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -62,11 +58,7 @@ HEADERS += \
     httpGP.h \
     inifile.h \
     service.h \
-    mydialog.h \
-    searchonline.h \
-    loading.h \
-    searchinfo.h \
-    sigup.h
+    fileproce.h
 
 FORMS += \
         mainwidget.ui \
@@ -77,11 +69,7 @@ FORMS += \
     login.ui \
     playlist.ui \
     lyricspage.ui \
-    listsingle.ui \
-    mydialog.ui \
-    searchonline.ui \
-    loading.ui \
-    sigup.ui
+    listsingle.ui
 
 RESOURCES += \
     resourece.qrc
