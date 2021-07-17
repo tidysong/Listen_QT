@@ -25,51 +25,66 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwidget.cpp \
-    localmusic.cpp \
-    downloadpage.cpp \
     cloudlist.cpp \
-    likepage.cpp \
-    login.cpp \
-    playlist.cpp \
-    lyricspage.cpp\
-    readlyrics.cpp \
-    listsingle.cpp \
-    player.cpp \
-    qmediainfo.cpp \
+    downloadpage.cpp \
+    fileproce.cpp \
     httpGP.cpp \
     inifile.cpp \
+    likepage.cpp \
+    listsingle.cpp \
+    loading.cpp \
+    localmusic.cpp \
+    login.cpp \
+    lyricspage.cpp \
+    mainwidget.cpp \
+    mydialog.cpp \
+    player.cpp \
+    playlist.cpp \
+    qmediainfo.cpp \
+    readlyrics.cpp \
+    searchinfo.cpp \
+    searchonline.cpp \
     service.cpp \
-    fileproce.cpp
+    sigup.cpp
 
 HEADERS += \
-        mainwidget.h \
-    localmusic.h \
-    downloadpage.h \
     cloudlist.h \
-    likepage.h \
-    login.h \
-    playlist.h \
-    lyricspage.h \
-    readlyrics.h \
-    listsingle.h \
-    player.h \
-    qmediainfo.h \
+    downloadpage.h \
+    fileproce.h \
     httpGP.h \
     inifile.h \
+    likepage.h \
+    listsingle.h \
+    loading.h \
+    localmusic.h \
+    login.h \
+    lyricspage.h \
+    mainwidget.h \
+    mydialog.h \
+    player.h \
+    playlist.h \
+    qmediainfo.h \
+    readlyrics.h \
+    searchinfo.h \
+    searchonline.h \
     service.h \
-    fileproce.h
+    sigup.h
+
 
 FORMS += \
-        mainwidget.ui \
-    localmusic.ui \
-    downloadpage.ui \
     cloudlist.ui \
+    downloadpage.ui \
     likepage.ui \
+    listsingle.ui \
+    loading.ui \
+    localmusic.ui \
     login.ui \
-    playlist.ui \
     lyricspage.ui \
-    listsingle.ui
+    mainwidget.ui \
+    mydialog.ui \
+    playlist.ui \
+    searchonline.ui \
+    sigup.ui
 
 RESOURCES += \
     resourece.qrc

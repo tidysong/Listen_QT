@@ -1,6 +1,7 @@
 #ifndef FILEPROCE_H
 #define FILEPROCE_H
-
+#include <QFile>
+#include <QDir>
 
 class fileproce
 {

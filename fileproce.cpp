@@ -40,7 +40,6 @@ void fileproce::DeleteFileOrFolder(const QString &strPath)//要删除的文件�
 
 
 bool fileproce::renameFile(QString oldnamePath, QString newnamePath){
-        toDir.replace("\\","/");
         if (oldnamePath == newnamePath){
             return true;
         }
@@ -66,7 +65,7 @@ QStringList fileproce::getlist(QString path){
 
     QDir dir(path);
     QStringList files = dir.entryList( QDir::Files|QDir::Readable, QDir::Name);
-    qDebug()<<files;
+    //qDebug()<<files;
 
     return files;
 }
