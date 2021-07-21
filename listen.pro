@@ -45,7 +45,9 @@ SOURCES += \
     searchinfo.cpp \
     searchonline.cpp \
     service.cpp \
-    sigup.cpp
+    sigup.cpp \
+    downfile.cpp \
+    success.cpp
 
 HEADERS += \
     cloudlist.h \
@@ -68,7 +70,9 @@ HEADERS += \
     searchinfo.h \
     searchonline.h \
     service.h \
-    sigup.h
+    sigup.h \
+    downfile.h \
+    success.h
 
 
 FORMS += \
@@ -84,7 +88,8 @@ FORMS += \
     mydialog.ui \
     playlist.ui \
     searchonline.ui \
-    sigup.ui
+    sigup.ui \
+    success.ui
 
 RESOURCES += \
     resourece.qrc

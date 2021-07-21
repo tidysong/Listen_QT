@@ -24,7 +24,6 @@ void player::initConfig(){
 }
 
 playInfo* player::getInf(QString filePath){
-    qDebug() << filePath;
     QMediaInfo *q = new QMediaInfo;
     q->Open(filePath);
     playInfo *info = new playInfo();
@@ -40,20 +39,74 @@ playInfo* player::getInf(QString filePath){
     }else{
         info->Author = a;
     }
-    info->name = q->Title().isEmpty() ? q->CompleteName() : q->Title();
+    QString reqname = QRegularExpression("[^/]*.mp3").match(q->CompleteName()).captured(0).replace(".mp3","");
+    info->name = q->Title().isEmpty() ? reqname : q->Title();
+    info->des = q->CompleteName();
+
     delete q;
     return info;
 }
 void player::addMusic(QString filePath){
+    int flag = musicList.length();
     playInfo *info = getInf(filePath);
-    musicList.append(info);
     varplaylist->addMedia(QUrl::fromLocalFile(filePath));
+    musicList.append(info);
+    if(flag == 0){//增加之前是空
+        setIndex(0);
+    }
+    //varplaylist->
     emit listChange();
 }
 void player::addMusic(QString filePath, int index){
+    int flag = musicList.length();
     playInfo *info = getInf(filePath);
     musicList.insert(index,info);
     varplaylist->insertMedia(index, QUrl::fromLocalFile(filePath));
+    if(flag == 0){//增加之前是空
+        setIndex(0);
+    }
+    emit listChange();
+}
+void player::addOlMusic(QString id ,QString name,QString author,QString url1,QString url2,QString duration,QString album){
+    //qDebug() << url1;
+    int flag = musicList.length();
+    playInfo *info = new playInfo;
+    info->id = id;
+    info->name = name;
+    info->Author = author;
+    info->url1 = url1;
+    info->url2 = url2;
+    info->duration = duration;
+    info->album = album;
+    info->des = name;
+    info->isOl = true;
+    info->mp3 = false;
+    info->lrc = false;
+    fileproce *f = new fileproce;
+    downFile *d1 = new downFile;
+    connect(d1,SIGNAL(success(QString,int)),this,SLOT(downSucc(QString,int)));
+
+    downFile *d2 = new downFile;
+    connect(d2,SIGNAL(success(QString,int)),this,SLOT(downSucc(QString,int)));
+    if( !f->exist(QString("cache/%1.mp3").arg(id)) ){
+        //歌曲缓存不存在
+        d1->down(url1,id,1);
+    }else{
+        info->mp3 = true;
+        info->filePath = QString("cache/%1.mp3").arg(id);
+    }
+    if( !f->exist(QString("cache/%1.lrc").arg(id)) ){
+        //歌词缓存不存在
+        d2->down(url2,id,2);
+    }else{
+        info->lrc = true;
+    }
+    musicList.append(info);
+
+    varplaylist->addMedia(QUrl::fromLocalFile( QString("cache/%1.mp3").arg(id) ));
+    if(flag == 0){//增加之前是空
+        setIndex(0);
+    }
     emit listChange();
 }
 void player::setVol(int position){
@@ -63,6 +116,7 @@ void player::play(){
     varplay->play();
 }
 void player::pause(){
+
     varplay->pause();
 }
 void player::next(){
@@ -73,6 +127,20 @@ void player::pre(){
     varplaylist->previous();
 }
 void player::setIndex(int index){
+    //Online拦截
+    if( musicList.at(index)->isOl ){
+        //在线歌曲
+        if( !musicList.at(index)->lrc || !musicList.at(index)->mp3){
+            //当 MP3 或 lrc 不存在的时候 开启缓存动画
+            emit musicLoading();
+            //QTimer *pTimer = new QTimer(this);
+            prePlayerIndex = index;
+            QTimer::singleShot( 3000, this, SLOT(hideLoading()) );
+            qDebug() << musicList.at(index)->isOl << musicList.at(index)->lrc << musicList.at(index)->mp3;
+            return;
+        }
+    }
+
     varplaylist->setCurrentIndex(index);
 }
 void player::remove(int index){
@@ -112,4 +180,34 @@ void player::volumeChanged(int position){
 
 void player::playbackModeChanged(QMediaPlaylist::PlaybackMode mode){
     emit modeChange(mode);
+}
+
+
+void player::downSucc(QString id,int type){
+    qDebug() << id << "&" << type;
+    if(type == 1){
+        for(int i=0;i<musicList.length();i++){
+            if(musicList.at(i)->id == id){
+                musicList.at(i)->mp3 = true;
+                musicList.at(i)->filePath = QString("cache/%1.mp3").arg(id);
+                qDebug() << musicList.at(i)->filePath;
+                break;
+            }
+        }
+    }else if(type == 2){
+        for(int i=0;i<musicList.length();i++){
+            if(musicList.at(i)->id == id){
+                musicList.at(i)->lrc = true;
+                break;
+            }
+        }
+    }
+}
+
+void player::hideLoading(){
+    //加载完成
+    emit musicHideLoading();
+    qDebug() << "hideLoading";
+    varplaylist->setCurrentIndex(prePlayerIndex);
+    varplay->play();
 }

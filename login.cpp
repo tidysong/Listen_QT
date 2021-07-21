@@ -123,5 +123,22 @@ void login::on_sign_clicked()
 }
 
 void login::signReturn(){
+    service *s = new service;
+    connect( s, SIGNAL(sigupSuccess(QString)), this, SLOT(sigupSuccess(QString)));
+    s->sigup(ui->username->text(),ui->password->text());
     qDebug() << "注册成功！";
+}
+
+
+void login::sigupSuccess(QString id){
+    MyDialog *dialog = new MyDialog;
+    connect(dialog , SIGNAL(sendClose()), this , SLOT(sendClose()));
+    dialog->set(1,QString("注册成功，将为您自动登录。"),5);
+    Inifile *i = new Inifile;
+    i->Savelogintime(id);
+    i->Saveusername(ui->username->text());
+    i->Savepassword(ui->password->text());
+    dialog->show();
+    emit logSuccess();
+    close();
 }

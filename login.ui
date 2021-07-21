@@ -117,7 +117,7 @@
 }</string>
     </property>
     <property name="text">
-     <string>test</string>
+     <string/>
     </property>
     <property name="placeholderText">
      <string>请输入用户名</string>
@@ -146,7 +146,7 @@
 }</string>
     </property>
     <property name="text">
-     <string>1</string>
+     <string/>
     </property>
     <property name="echoMode">
      <enum>QLineEdit::Password</enum>
@@ -232,6 +232,9 @@
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">#loginButton{
 	background-color: rgba(3,122,250,0.8);
@@ -264,6 +267,9 @@
       <family>幼圆</family>
       <pointsize>12</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">#sign{

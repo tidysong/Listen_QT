@@ -9,13 +9,25 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QObject>
+#include <QTimer>
 #include <qmediainfo.h>
+#include <fileproce.h>
+#include <downfile.h>
 class playInfo{
     public:
         QString filePath;
         QString name;
         QString Author;
         QString duration;
+
+        QString des;
+
+        QString id;
+        QString album;
+        QString url1;//mp3
+        QString url2;//lrc
+        bool isOl;//是否为在线歌曲
+        bool mp3,lrc;
 };
 class player : public QObject
 {
@@ -34,12 +46,14 @@ public:
     void clear();
     void setPosition(qint64 position);
     void setVol(int position);
+    void addOlMusic(QString id ,QString name,QString author,QString url1,QString url2,QString duration,QString album);//网络歌曲
     QString exp(QString text, QString g);
     playInfo* getInf(QString filePath);
     static player *p;
     QList<playInfo*> musicList;//歌单列表
     QMediaPlayer *varplay;
     QMediaPlaylist *varplaylist;
+    int prePlayerIndex = 0;
 signals:
 
     void MediaChanged(const QMediaContent &content);
@@ -50,6 +64,8 @@ signals:
     void IndexChanged(int position);
     void volumeChange(int volume);//音量变化
     void modeChange(QMediaPlaylist::PlaybackMode mode);
+    void musicHideLoading();
+    void musicLoading();
 private slots:
     void currentMediaChanged(const QMediaContent &content);
     void currentIndexChanged(int position);
@@ -58,6 +74,9 @@ private slots:
     void stateChanged(QMediaPlayer::State newState);
     void volumeChanged(int volume);
     void playbackModeChanged(QMediaPlaylist::PlaybackMode);
+
+    void downSucc(QString, int type);
+    void hideLoading();
 };
 
 #endif // PLAYER_H

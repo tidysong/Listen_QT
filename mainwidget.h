@@ -24,6 +24,7 @@
 #include <lyricspage.h>
 #include <inifile.h>
 #include <loading.h>
+#include <downfile.h>
 namespace Ui {
 class MainWidget;
 }
@@ -76,6 +77,10 @@ private slots:
 
     void on_horizontalSlider_sliderReleased();
     void search_succ();
+
+    void downSucc();
+    void loadSlot();
+    void loadHideSlot();
 private:
     Ui::MainWidget *ui;
     localMusic *localMusic_page;

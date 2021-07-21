@@ -19,20 +19,28 @@ public:
     void login(QString u,QString p);
     void search(QString title);
     void cloud();
-    QString headUrl = "http://localhost:8222/";
+    QString headUrl = "http://localhost:8181";
 
     QList<searchInfo*> searchList;
     QList<searchInfo*> cloudList;
+    void addCloud(QString);
+    void deleteCloud(QString id);
+    void sigup(QString u,QString p);
 signals:
     void LoginSuccess();
     void searchSuccess(QList<searchInfo*>);
     void cloudSuccess(QList<searchInfo*>);
     void LoginFail();
+    void addCloudSuccess();
+    void deleteCloudSuccess();
+    void sigupSuccess(QString id);
 private slots:
     void loginReturn(QString);
     void searchReturn(QString);
     void cloudReturn(QString res);
-
+    void addCloudReturn(QString);
+    void deleteCloudReturn(QString);
+    void sigupReturn(QString res);
 public slots:
 };
 

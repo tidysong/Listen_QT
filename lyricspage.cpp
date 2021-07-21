@@ -237,7 +237,12 @@ void lyricsPage::openLyrics(QString filePath){
         cont = "[00:00.000]当前歌曲暂无歌词";
     }else{
         QTextStream stream(&file);
-        stream.setCodec( QTextCodec::codecForName("GB2312") );
+        //if( !player::p->musicList.at(player::p->varplaylist->currentIndex())->isOl){
+        //   stream.setCodec( QTextCodec::codecForName("UTF8") );
+        //}else{
+        //    stream.setCodec( QTextCodec::codecForName("GB2312") );
+        //}
+        stream.setCodec( QTextCodec::codecForName("UTF8") );
         cont = stream.readAll();
     }
     r = new readLyrics(cont);

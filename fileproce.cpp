@@ -69,3 +69,15 @@ QStringList fileproce::getlist(QString path){
 
     return files;
 }
+
+
+bool fileproce::exist(QString filePath){
+    QFileInfo file(filePath);
+    return file.exists();
+}
+
+void fileproce::copy(QString reportpath,QString newreportpath){
+    qDebug() << reportpath;
+    qDebug() << newreportpath;
+    QFile::copy(reportpath,newreportpath);
+}

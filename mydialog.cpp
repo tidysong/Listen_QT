@@ -38,9 +38,11 @@ void MyDialog::set(int type, QString text, int time){
     }
     showTime = time;
     ui->label_3->setText(QString::number(time) + "s后自动消失");
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(1000);
+    //QTimer *timer = new QTimer(this);
+
+    QTimer::singleShot( time, this, SLOT(update()) );
+    //connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    //timer->start(1000);
 }
 /*
  #ok{

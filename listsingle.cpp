@@ -53,16 +53,16 @@ listSingle::~listSingle()
 }
 
 
-void listSingle::set(QString name,QString author,int i){
+void listSingle::set(QString name, QString author, int i, QString des){
     strScrollCation = name;
-    QTimer *pTimer = new QTimer(this);
-    connect(pTimer,SIGNAL(timeout()),this,SLOT(scrollCaption()));
+    //QTimer *pTimer = new QTimer(this);
+    //connect(pTimer,SIGNAL(timeout()),this,SLOT(scrollCaption()));
 
     // 定时200毫秒
-    pTimer->start(1000);
-    //ui->label->setText(name);
+    //pTimer->start(1000);
+    ui->label->setText(name);
     ui->label_2->setText(author);
-    ui->label->setToolTip(name);
+    ui->label->setToolTip(des);
     ui->label_2->setToolTip(author);
     this->i = i;
     if( player::p->varplay->state() == QMediaPlayer::PlayingState){

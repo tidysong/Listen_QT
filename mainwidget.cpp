@@ -22,10 +22,15 @@ MainWidget::MainWidget(QWidget *parent) :
 
     initUI();
     initConfig();
+    connect(player::p, SIGNAL(musicLoading()), this, SLOT(loadSlot()));
+    connect(player::p, SIGNAL(musicHideLoading()), this, SLOT(loadHideSlot()));
+    //downFile *down = new downFile;
+    //connect(down,SIGNAL(success()),this,SLOT(downSucc()));
+    //down->down("http://42.193.148.10:8181/uploads/20210717/569214250.mp3");
+    //player::p->addOlMusic("164","借","毛不易","http://42.193.148.10:8181/uploads/20210717/569214250.mp3","http://42.193.148.10:8181/uploads/20210717/569214250.lrc","04:03","平凡的一天");
 
-
-
-
+    //fileproce *f1 = new fileproce;
+    //qDebug() << f1->getlist("F:/Qt_project/build-listen-Desktop_Qt_5_9_0_MinGW_32bit-Debug/cache/");
 }
 
 MainWidget::~MainWidget()
@@ -52,7 +57,11 @@ void MainWidget::initUI(){
     download_page = new downloadPage(this);
     cloud_page = new cloudList(this);
     like_page = new likePage(this);
+    localMusic_page->setLike(like_page);
     search_page = new searchOnline(this);
+    search_page->setCloud(cloud_page);
+    cloud_page->setDown(download_page);
+    search_page->setDown(download_page);
     connect(search_page, SIGNAL(succ()), this, SLOT(search_succ()));
     ui->stackedWidget->addWidget(localMusic_page);//添加至
     ui->stackedWidget->addWidget(download_page);
@@ -77,8 +86,8 @@ void MainWidget::initUI(){
     effect1->setBlurRadius(20);//设定阴影的半径大小 30-40
     ui->widget_4->setGraphicsEffect(effect1);//应用至widget
 
-    player::p->addMusic("F:/毛不易 - 借.mp3");
-    player::p->setIndex(0);
+    //player::p->addMusic("cache/164.mp3");
+    //player::p->setIndex(0);
     //curve; //动作曲线
     curve.setType(QEasingCurve::InCubic); //动作曲线方式
 
@@ -216,6 +225,17 @@ void MainWidget::on_avatar_clicked()
 {
     if(MainWidget::isLogin){
         //已经登录过
+        Inifile *i = new Inifile;
+        i->Savelogintime("");
+        i->Saveusername("");
+        i->Savepassword("");
+        MainWidget::isLogin = false;
+
+        QIcon myicon;
+        myicon.addFile(tr(":/pic/unLogin.png"),QSize(100,100));
+        ui->user->setText("欢迎您，陌生人");
+        ui->avatar->setIcon(myicon);
+        cloud_page->clear();
         return;
     }
     login *temp = new login();
@@ -232,7 +252,7 @@ void MainWidget::showListf(){
     playlist_page->show();
     isListShow = true;
     QPropertyAnimation *pScaleAnimation = new QPropertyAnimation(playlist_page, "pos");
-    pScaleAnimation->setDuration(50);
+    pScaleAnimation->setDuration(100);
     pScaleAnimation->setStartValue(QPoint(1065, 0));
     pScaleAnimation->setEndValue(QPoint(752, 0));
     pScaleAnimation->setEasingCurve(curve);
@@ -241,7 +261,7 @@ void MainWidget::showListf(){
 void MainWidget::closeListf(){
     isListShow = false;
     QPropertyAnimation *pScaleAnimation = new QPropertyAnimation(playlist_page, "pos");
-    pScaleAnimation->setDuration(50);
+    pScaleAnimation->setDuration(100);
     pScaleAnimation->setStartValue(QPoint(752, 0));
     pScaleAnimation->setEndValue(QPoint(1065, 0));
     pScaleAnimation->setEasingCurve(curve);
@@ -306,9 +326,17 @@ void MainWidget::dropEvent(QDropEvent *event)
     //如果想读取整个目录，则在不同的操作平台下，自己编写函数实现读取整个目录文件名
     QList<QUrl> urls = event->mimeData()->urls();
     if(urls.isEmpty())return;
+
+    QFile file("local.dat");
+    file.open(QIODevice::Append);
+    //file.write(str.toUtf8());
     foreach(QUrl url, urls) {
+        //qDebug() << url.toLocalFile(); "F:/毛不易.mp3"
         player::p->addMusic(url.toLocalFile());
+        file.write( QString(url.toLocalFile() + "&").toUtf8());
     }
+    file.close();
+    localMusic_page->load();
 }
 
 
@@ -377,6 +405,7 @@ void MainWidget::MediaChanged(const QMediaContent &content){
     //isJustOpen = false;
     ui->label->setText(player::p->musicList.at(player::p->varplaylist->currentIndex())->name);
     ui->label_2->setText(player::p->musicList.at(player::p->varplaylist->currentIndex())->Author);
+    //qDebug() << "why not?";
 
 }
 
@@ -512,4 +541,14 @@ void MainWidget::hideLoad(){
 }
 void MainWidget::search_succ(){
     hideLoad();
+}
+
+void MainWidget::loadSlot(){
+    showLoad();
+}
+void MainWidget::loadHideSlot(){
+    hideLoad();
+}
+void MainWidget::downSucc(){
+    qDebug() << "下载成功！";
 }

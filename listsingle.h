@@ -16,7 +16,7 @@ class listSingle : public QWidget
 
 public:
     explicit listSingle(QWidget *parent = 0);
-    void set(QString, QString, int);
+    void set(QString, QString, int, QString);
     ~listSingle();
 
 private:

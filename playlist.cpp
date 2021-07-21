@@ -41,20 +41,14 @@ void playList::on_listWidget_customContextMenuRequested(const QPoint &pos)
 
         QMenu *popMenu = new QMenu( this );
         popMenu->setWindowFlag(Qt::NoDropShadowWindowHint);
-        QAction *playSeed = new QAction(tr("立即播放"), this);
         QAction *deleteSeed = new QAction(tr("从列表删除"), this);
-        QAction *cloudSeed = new QAction(tr("添加到歌单"), this);
-        QAction *likeSeed = new QAction(tr("收藏歌曲"), this);
         selectedIndex =  ui->listWidget->row(curItem);
-        popMenu->addAction( playSeed );
         popMenu->addAction( deleteSeed );
+
         connect(deleteSeed,SIGNAL(triggered()),this,SLOT(deleteMusicFromList()));
-        popMenu->addAction( cloudSeed );
-        popMenu->addAction( likeSeed );
         popMenu->exec( QCursor::pos() );
-        //delete popMenu;
-        //delete deleteSeed;
-        //delete playSeed;delete cloudSeed;delete likeSeed;
+        delete popMenu;
+        delete deleteSeed;
 }
 
 void playList::listChange(){
@@ -65,7 +59,7 @@ void playList::listChange(){
         QListWidgetItem *item=new QListWidgetItem(list,i);
         item->setSizeHint(QSize(256,75));
         listSingle *w = new listSingle(list);
-        w->set( player::p->musicList.at(i)->name, player::p->musicList.at(i)->Author, i );
+        w->set( player::p->musicList.at(i)->name, player::p->musicList.at(i)->Author, i ,player::p->musicList.at(i)->des);
         list->setItemWidget(item,w);
     }
 }

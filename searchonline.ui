@@ -18,7 +18,7 @@
     <rect>
      <x>30</x>
      <y>0</y>
-     <width>301</width>
+     <width>601</width>
      <height>51</height>
     </rect>
    </property>
@@ -50,6 +50,9 @@
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
@@ -74,6 +77,12 @@
 
 </string>
    </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
    <property name="showGrid">
     <bool>false</bool>
    </property>
@@ -87,7 +96,7 @@
     <bool>true</bool>
    </property>
    <attribute name="horizontalHeaderVisible">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <attribute name="horizontalHeaderCascadingSectionResizes">
     <bool>false</bool>

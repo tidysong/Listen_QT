@@ -33,7 +33,7 @@ private slots:
     void LoginFail();
     void on_sign_clicked();
     void signReturn();
-
+    void sigupSuccess(QString id);
 private:
     Ui::login *ui;
     bool is_Press;

@@ -118,7 +118,7 @@ border-radius:10px;
      <string notr="true">background-color : rgba(0,0,0,0);</string>
     </property>
     <property name="text">
-     <string>借</string>
+     <string/>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -149,7 +149,7 @@ border-radius:10px;
      <string notr="true">background-color : rgba(0,0,0,0);</string>
     </property>
     <property name="text">
-     <string>毛不易 - 平凡的一天</string>
+     <string/>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -403,7 +403,7 @@ QSlider::sub-page:horizontal{
       </rect>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string/>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_4">
@@ -505,7 +505,7 @@ QPushButton:pressed{
       </rect>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string/>
      </property>
     </widget>
    </widget>

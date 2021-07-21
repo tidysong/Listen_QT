@@ -36,5 +36,6 @@
         <file>pic/loading.png</file>
         <file>pic/loading1.gif</file>
         <file>pic/loading.gif</file>
+        <file>pic/success.png</file>
     </qresource>
 </RCC>

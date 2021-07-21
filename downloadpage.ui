@@ -70,6 +70,9 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="cursor" stdset="0">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
@@ -97,6 +100,12 @@
 
 </string>
    </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
    <property name="showGrid">
     <bool>false</bool>
    </property>
@@ -110,7 +119,7 @@
     <bool>true</bool>
    </property>
    <attribute name="horizontalHeaderVisible">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <attribute name="horizontalHeaderCascadingSectionResizes">
     <bool>false</bool>
@@ -216,6 +225,7 @@
    <property name="font">
     <font>
      <family>幼圆</family>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -278,11 +288,69 @@
     <string>搜索我下载的音乐</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>70</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#666666;</string>
+   </property>
+   <property name="text">
+    <string>储存目录：download</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>277</x>
+     <y>69</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑 Light</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	color : #5480B1;
+	border : 0px;
+}
+QPushButton:hover{
+	color : #105BB1;
+}</string>
+   </property>
+   <property name="text">
+    <string>打开目录</string>
+   </property>
+  </widget>
   <zorder>label</zorder>
   <zorder>musicList</zorder>
   <zorder>playAll</zorder>
   <zorder>searchText</zorder>
   <zorder>searchIcon</zorder>
+  <zorder>label_2</zorder>
+  <zorder>pushButton</zorder>
  </widget>
  <resources>
   <include location="resourece.qrc"/>

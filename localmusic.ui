@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgba(255,255,255,0);
+border : 0px</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -50,6 +54,9 @@
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
@@ -74,6 +81,12 @@
 
 </string>
    </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
    <property name="showGrid">
     <bool>false</bool>
    </property>
@@ -87,7 +100,7 @@
     <bool>true</bool>
    </property>
    <attribute name="horizontalHeaderVisible">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <attribute name="horizontalHeaderCascadingSectionResizes">
     <bool>false</bool>
@@ -243,6 +256,9 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">#searchText{
 	background-color:#E0E0E0;
@@ -289,11 +305,10 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>读取/localMusic/文件</string>
+    <string>本地音乐可直接拖入</string>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(0,0,0,0);
-border : 0px</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
